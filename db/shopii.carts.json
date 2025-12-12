@@ -1,0 +1,147 @@
+[{
+  "_id": {
+    "$oid": "60d21b4667d0d8992e610cac"
+  },
+  "userId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "items": [
+    {
+      "productId": {
+        "$oid": "60d21b4667d0d8992e610c8d"
+      },
+      "quantity": 2,
+      "_id": {
+        "$oid": "6881e911ef7b120dda030b7e"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2023-06-27T14:20:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-24T20:58:45.337Z"
+  },
+  "__v": 121
+},
+{
+  "_id": {
+    "$oid": "6879e9592324a913a52074c6"
+  },
+  "userId": {
+    "$oid": "60d21b4667d0d8992e610c89"
+  },
+  "items": [
+    {
+      "productId": {
+        "$oid": "6879e94c2324a913a52074a2"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "6879e9592324a913a52074c7"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-07-18T06:27:37.217Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-18T06:27:37.217Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "689c2f4b580487ac8ab91315"
+  },
+  "userId": {
+    "$oid": "689c2f2f580487ac8ab912ee"
+  },
+  "items": [
+    {
+      "productId": {
+        "$oid": "60d21b4667d0d8992e610c90"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "68a71d38a2217185c8a50d55"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "60d21b4667d0d8992e610c8e"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "68a71d39a2217185c8a50d5a"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "60d21b4667d0d8992e610c8d"
+      },
+      "quantity": 2,
+      "_id": {
+        "$oid": "68a71d3aa2217185c8a50d60"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "68a769c03d1f6d506bd7e451"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "68aead57f52f72f4c584a679"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-08-13T06:23:07.571Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T07:01:43.775Z"
+  },
+  "__v": 5
+},
+{
+  "_id": {
+    "$oid": "68a72b5f777055a538a74118"
+  },
+  "userId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "items": [
+    {
+      "productId": {
+        "$oid": "68a72ae3777055a538a7409d"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "68a768043d1f6d506bd7e276"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-08-21T14:21:19.500Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:22:49.443Z"
+  },
+  "__v": 17
+},
+{
+  "_id": {
+    "$oid": "68a768a93d1f6d506bd7e2f1"
+  },
+  "userId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "items": [],
+  "createdAt": {
+    "$date": "2025-08-21T18:42:49.638Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:59:48.169Z"
+  },
+  "__v": 24
+}]

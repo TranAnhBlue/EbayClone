@@ -1,0 +1,912 @@
+import React, { useState, useEffect, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import Modal from "react-modal";
+import { fetchAddresses, addAddress } from "../../features/address/addressSlice";
+import { applyVoucher, clearVoucher } from "../../features/voucher/voucherSlice";
+import { createOrder } from "../../features/order/orderSlice";
+import { removeSelectedItems } from "../../features/cart/cartSlice";
+import { motion } from "framer-motion";
+import {
+  Container,
+  Typography,
+  Box,
+  Paper,
+  Grid,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Button,
+  TextField,
+  Divider,
+  Chip,
+  CircularProgress,
+  FormControl,
+  Checkbox,
+  Select,
+  MenuItem,
+  InputLabel
+} from "@mui/material";
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import DiscountIcon from '@mui/icons-material/Discount';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+// Custom modal styles
+const customModalStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    zIndex: 1000,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  content: {
+    position: 'relative',
+    top: 'auto',
+    left: 'auto',
+    right: 'auto',
+    bottom: 'auto',
+    maxWidth: '500px',
+    width: '100%',
+    padding: '0',
+    border: 'none',
+    borderRadius: '8px',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+    backgroundColor: 'white',
+    overflow: 'hidden'
+  }
+};
+
+const Checkout = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get data from the Redux store
+  const { token } = useSelector((state) => state.auth) || {};
+  const cartItems = useSelector((state) => state.cart?.items || []);
+  const addresses = useSelector((state) => state.address?.addresses || []);
+  const { voucher, loading: voucherLoading, error: voucherError } = useSelector((state) => state.voucher);
+
+  // State for selected products
+  const selectedProducts = location.state?.selectedItems || [];
+
+
+  // State for checkout options
+  const [couponCode, setCouponCode] = useState("");
+  const [selectedAddressId, setSelectedAddressId] = useState("");
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [newAddress, setNewAddress] = useState({
+    fullName: "",
+    phone: "",
+    street: "",
+    city: "",
+    district: "",
+    province: "",
+    state: "",
+    country: "Việt Nam",
+    province_id: null,
+    district_id: null,
+    ward: "",
+    ward_code: null,
+    isDefault: false,
+  });
+  const [phoneError, setPhoneError] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  // Thêm các state cho dropdown GHN
+  const [provinces, setProvinces] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [selectedWard, setSelectedWard] = useState(null);
+  const [groupedByShop, setGroupedByShop] = useState({});
+
+  // Group products theo shop mỗi khi selectedProducts thay đổi
+  useEffect(() => {
+    const grouped = selectedProducts.reduce((acc, item) => {
+      const shopObj = item.shop;   // đã truyền từ Cart
+      const shopId = shopObj?._id || item.productId?.sellerId || "unknown";
+
+      if (!acc[shopId]) {
+        acc[shopId] = {
+          shop: shopObj,
+          items: [],
+          subtotal: 0,
+          shippingFee: 0,
+        };
+      }
+
+      acc[shopId].items.push(item);
+      acc[shopId].subtotal += (item.productId?.price || 0) * item.quantity;
+      return acc;
+    }, {});
+    setGroupedByShop(grouped);
+  }, [selectedProducts]);
+
+
+  // API tính phí ship
+  const fetchShippingFee = async (shopGroup, address) => {
+    try {
+      if (!shopGroup?.shop?.fromDistrictId ||
+        !address?.locationGHN?.district_id ||
+        !address?.locationGHN?.ward_code) {
+        console.warn("Thiếu thông tin địa chỉ để tính phí ship:", {
+          from: shopGroup?.shop?.fromDistrictId,   // ✅ sửa ở đây
+          to: address?.locationGHN?.district_id,
+          ward: address?.locationGHN?.ward_code,
+        });
+        return 0;
+      }
+
+      const res = await fetch("http://localhost:9999/api/ghn/calc-fee-simple", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from_district_id: shopGroup.shop.fromDistrictId,  // ✅ dùng đúng key
+          to_district_id: address.locationGHN.district_id,
+          to_ward_code: address.locationGHN.ward_code,
+          weight: shopGroup.items.reduce((sum, i) => sum + i.quantity * 500, 0)
+        })
+      });
+      const data = await res.json();
+      return data?.data?.service_fee / 25000 || 0;
+
+    } catch (err) {
+      console.error("Ship fee error:", err);
+      return 0;
+    }
+  };
+
+
+  // Cập nhật phí ship khi địa chỉ chọn thay đổi
+  useEffect(() => {
+    const updateFees = async () => {
+      if (!selectedAddressId) return;
+      const address = addresses.find(a => a._id === selectedAddressId);
+      if (!address) return;
+
+      const updated = { ...groupedByShop };
+      for (const shopId of Object.keys(updated)) {
+        const fee = await fetchShippingFee(updated[shopId], address);
+        updated[shopId].shippingFee = fee;
+      }
+      setGroupedByShop(updated);
+    };
+
+    if (Object.keys(groupedByShop).length > 0) {
+      updateFees();
+    }
+  }, [groupedByShop, selectedAddressId]);
+
+  // Fetch addresses on component mount and clear voucher on unmount
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchAddresses());
+    }
+    return () => {
+      dispatch(clearVoucher());
+    };
+  }, [dispatch, token]);
+
+  // Set default address if available
+  useEffect(() => {
+    if (addresses.length > 0) {
+      const defaultAddress = addresses.find(address => address.isDefault);
+      if (defaultAddress) {
+        setSelectedAddressId(defaultAddress._id);
+      } else {
+        setSelectedAddressId(addresses[0]._id);
+      }
+    }
+  }, [addresses]);
+
+  // Lấy danh sách tỉnh/thành phố khi mở modal
+  useEffect(() => {
+    async function fetchProvinces() {
+      try {
+        const res = await fetch('http://localhost:9999/api/ghn/provinces');
+        const data = await res.json();
+        setProvinces(data.data || []);
+      } catch (err) {
+        setProvinces([]);
+      }
+    }
+    fetchProvinces();
+  }, []);
+
+  // Lấy danh sách quận/huyện khi chọn tỉnh
+  useEffect(() => {
+    async function fetchDistricts() {
+      if (selectedProvince) {
+        try {
+          const res = await fetch(`http://localhost:9999/api/ghn/districts?province_id=${selectedProvince}`);
+          const data = await res.json();
+          setDistricts(data.data || []);
+        } catch (err) {
+          setDistricts([]);
+        }
+        setSelectedDistrict(null);
+        setWards([]);
+        setSelectedWard(null);
+      } else {
+        setDistricts([]);
+        setWards([]);
+        setSelectedDistrict(null);
+        setSelectedWard(null);
+      }
+    }
+    fetchDistricts();
+  }, [selectedProvince]);
+
+  // Lấy danh sách phường/xã khi chọn quận/huyện
+  useEffect(() => {
+    async function fetchWards() {
+      if (selectedDistrict) {
+        try {
+          const res = await fetch(`http://localhost:9999/api/ghn/wards?district_id=${selectedDistrict}`);
+          const data = await res.json();
+          setWards(data.data || []);
+        } catch (err) {
+          setWards([]);
+        }
+        setSelectedWard(null);
+      } else {
+        setWards([]);
+        setSelectedWard(null);
+      }
+    }
+    fetchWards();
+  }, [selectedDistrict]);
+
+  // Validate phone number
+  const validatePhoneNumber = (phone) => {
+    const regex = /^0\d{9}$/;
+    return regex.test(phone);
+  };
+
+  // Calculate subtotal
+  const subtotal = selectedProducts.reduce((total, item) => {
+    return total + (item.productId?.price || 0) * item.quantity;
+  }, 0);
+
+  // Calculate discount from the applied voucher
+  const calculateDiscount = () => {
+    if (!voucher) return 0;
+    if (subtotal < voucher.minOrderValue) {
+      if (voucherError === null) {
+        toast.error(`Order must have a minimum value of $${voucher.minOrderValue.toLocaleString()} to apply this code.`);
+        dispatch(clearVoucher());
+      }
+      return 0;
+    }
+    if (voucher.discountType === 'fixed') {
+      return voucher.discount;
+    } else if (voucher.discountType === 'percentage') {
+      const calculatedDiscount = (subtotal * voucher.discount) / 100;
+      return voucher.maxDiscount > 0 ? Math.min(calculatedDiscount, voucher.maxDiscount) : calculatedDiscount;
+    }
+    return 0;
+  };
+
+  const discount = calculateDiscount();
+
+  // ✅ grandTotal tính bằng useMemo từ groupedByShop + discount
+  const grandTotal = useMemo(() => {
+    let total = 0;
+    Object.values(groupedByShop).forEach(g => {
+      total += g.subtotal + g.shippingFee;
+    });
+    return Math.max(total - discount, 0);
+  }, [groupedByShop, discount]);
+
+  // Handle adding a new address
+  const handleAddAddress = () => {
+    if (!validatePhoneNumber(newAddress.phone)) {
+      setPhoneError("Invalid phone number. Must start with 0 and contain exactly 10 digits.");
+      return;
+    }
+    setPhoneError("");
+    dispatch(addAddress(newAddress));
+    setIsAddressModalOpen(false);
+    setNewAddress({
+      fullName: "", phone: "", street: "", city: "", district: "", province: "", state: "", country: "Việt Nam", province_id: null, district_id: null, ward: "", ward_code: null, isDefault: false,
+    });
+  };
+
+  // Handle applying the coupon code
+  const handleApplyCoupon = () => {
+    if (couponCode.trim()) {
+      dispatch(applyVoucher(couponCode));
+    } else {
+      toast.error("Please enter a coupon code");
+    }
+  };
+
+  // Handle canceling the applied voucher
+  const handleCancelVoucher = () => {
+    dispatch(clearVoucher());
+    setCouponCode("");
+    toast.info("Coupon code removed.");
+  };
+
+  // Handle placing the order, removing the paymentMethod
+  const handlePlaceOrder = async () => {
+    if (!selectedAddressId) {
+      toast.error("Please select a shipping address");
+      return;
+    }
+
+    setIsProcessing(true);
+
+    const orderDetails = {
+      selectedItems: selectedProducts.map(item => ({
+        productId: item.productId._id,
+        quantity: item.quantity
+      })),
+      selectedAddressId,
+      couponCode: voucher ? voucher.code : ''
+    };
+
+    try {
+      console.log("Submitting order with items:", orderDetails.selectedItems);
+      const result = await dispatch(createOrder(orderDetails)).unwrap();
+
+      // Get all product IDs to remove from cart
+      const productIds = selectedProducts.map(item => item.productId._id);
+
+      // Remove the items from cart in a single batch operation
+      await dispatch(removeSelectedItems(productIds)).unwrap();
+
+      toast.success("Order placed successfully!");
+
+      // Navigate to payment page with stringified orderId
+      navigate("/payment", {
+        state: {
+          orderId: result.orderId.toString(),
+          totalPrice: grandTotal
+        },
+        replace: true
+      });
+    } catch (error) {
+      toast.error(error);
+      setIsProcessing(false);
+    }
+  };
+
+  // Khi chọn tỉnh
+  const handleProvinceChange = (e) => {
+    const provinceId = e.target.value;
+    const provinceObj = provinces.find(p => p.ProvinceID === Number(provinceId));
+    setSelectedProvince(provinceId);
+    setNewAddress({
+      ...newAddress,
+      province: provinceObj ? provinceObj.ProvinceName : "",
+      province_id: provinceObj ? provinceObj.ProvinceID : null,
+      state: provinceObj ? provinceObj.ProvinceName : "",
+      city: "",
+      district: "",
+      district_id: null,
+      ward: "",
+      ward_code: null,
+    });
+  };
+
+  // Khi chọn quận/huyện
+  const handleDistrictChange = (e) => {
+    const districtId = e.target.value;
+    const districtObj = districts.find(d => d.DistrictID === Number(districtId));
+    setSelectedDistrict(districtId);
+    setNewAddress({
+      ...newAddress,
+      district: districtObj ? districtObj.DistrictName : "",
+      district_id: districtObj ? districtObj.DistrictID : null,
+      city: districtObj ? districtObj.DistrictName : "",
+      ward: "",
+      ward_code: null,
+    });
+  };
+
+  // Khi chọn phường/xã
+  const handleWardChange = (e) => {
+    const wardCode = e.target.value;
+    const wardObj = wards.find(w => w.WardCode === wardCode);
+    setSelectedWard(wardCode);
+    setNewAddress({
+      ...newAddress,
+      ward: wardObj ? wardObj.WardName : "",
+      ward_code: wardObj ? wardObj.WardCode : null,
+    });
+  };
+
+  return (
+    <Container maxWidth="lg" sx={{ py: 6 }}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{
+            fontWeight: 700,
+            color: '#0F52BA',
+            position: 'relative',
+            pb: 2,
+            mb: 4,
+            '&:after': {
+              content: '""',
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              width: '60px',
+              height: '4px',
+              backgroundColor: '#0F52BA',
+              borderRadius: '2px'
+            }
+          }}
+        >
+          <ShoppingCartIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+          Checkout
+        </Typography>
+
+        <Grid container spacing={4}>
+          {/* Left side: Shipping and coupon */}
+          <Grid item xs={12} md={7}>
+            <Paper
+              elevation={3}
+              sx={{
+                p: 4,
+                mb: 4,
+                borderRadius: 2,
+                boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                <LocalShippingIcon sx={{ mr: 1, color: '#0F52BA' }} />
+                <Typography variant="h5" fontWeight={600}>
+                  Shipping Address
+                </Typography>
+              </Box>
+
+              <Divider sx={{ mb: 3 }} />
+
+              {addresses.length > 0 ? (
+                <RadioGroup
+                  value={selectedAddressId}
+                  onChange={(e) => setSelectedAddressId(e.target.value)}
+                >
+                  <Grid container spacing={2}>
+                    {addresses.map((address) => (
+                      <Grid item xs={12} sm={6} key={address._id}>
+                        <Paper
+                          variant="outlined"
+                          sx={{
+                            p: 2,
+                            borderRadius: 2,
+                            borderColor: selectedAddressId === address._id ? '#0F52BA' : 'divider',
+                            backgroundColor: selectedAddressId === address._id ? 'rgba(15, 82, 186, 0.04)' : 'transparent',
+                            position: 'relative',
+                            transition: 'all 0.2s'
+                          }}
+                        >
+                          {address.isDefault && (
+                            <Chip
+                              label="Default"
+                              size="small"
+                              color="primary"
+                              sx={{
+                                position: 'absolute',
+                                top: 8,
+                                right: 8,
+                                backgroundColor: '#0F52BA'
+                              }}
+                            />
+                          )}
+                          <FormControlLabel
+                            value={address._id}
+                            control={<Radio sx={{ color: '#0F52BA', '&.Mui-checked': { color: '#0F52BA' } }} />}
+                            label={
+                              <Box sx={{ ml: 1 }}>
+                                <Typography variant="body1" fontWeight={600}>
+                                  {address.fullName}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                  {address.phone}
+                                </Typography>
+                                <Typography variant="body2">
+                                  {`${address.street}, ${address.city}, ${address.state}, ${address.country}`}
+                                </Typography>
+                              </Box>
+                            }
+                            sx={{ width: '100%', alignItems: 'flex-start', m: 0 }}
+                          />
+                        </Paper>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </RadioGroup>
+              ) : (
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                  You don't have any addresses yet. Please add a new address.
+                </Typography>
+              )}
+
+              <Button
+                variant="outlined"
+                startIcon={<AddIcon />}
+                onClick={() => setIsAddressModalOpen(true)}
+                sx={{
+                  mt: 3,
+                  borderColor: '#0F52BA',
+                  color: '#0F52BA',
+                  '&:hover': {
+                    borderColor: '#0A3C8A',
+                    backgroundColor: 'rgba(15, 82, 186, 0.04)',
+                  }
+                }}
+              >
+                Add New Address
+              </Button>
+            </Paper>
+
+            <Paper
+              elevation={3}
+              sx={{
+                p: 4,
+                borderRadius: 2,
+                boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                <DiscountIcon sx={{ mr: 1, color: '#0F52BA' }} />
+                <Typography variant="h5" fontWeight={600}>
+                  Discount Code
+                </Typography>
+              </Box>
+
+              <Divider sx={{ mb: 3 }} />
+
+              {voucher ? (
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CheckCircleIcon sx={{ color: 'success.main', mr: 1 }} />
+                    <Typography variant="body1" fontWeight={500} color="success.main">
+                      Applied: {voucher.code}
+                    </Typography>
+                  </Box>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    size="small"
+                    startIcon={<CloseIcon />}
+                    onClick={handleCancelVoucher}
+                    sx={{ minWidth: 100 }}
+                  >
+                    Remove
+                  </Button>
+                </Box>
+              ) : (
+                <Box sx={{ display: 'flex' }}>
+                  <TextField
+                    fullWidth
+                    placeholder="Enter discount code"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    size="small"
+                    sx={{ mr: 2 }}
+                  />
+                  <Button
+                    variant="contained"
+                    onClick={handleApplyCoupon}
+                    disabled={voucherLoading || !couponCode.trim()}
+                    sx={{
+                      minWidth: 100,
+                      backgroundColor: '#0F52BA',
+                      '&:hover': {
+                        backgroundColor: '#0A3C8A',
+                      }
+                    }}
+                  >
+                    {voucherLoading ? <CircularProgress size={24} color="inherit" /> : 'Apply'}
+                  </Button>
+                </Box>
+              )}
+
+              {voucherError && !voucher && (
+                <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+                  {voucherError}
+                </Typography>
+              )}
+            </Paper>
+
+            {/* Removed Payment Method section */}
+          </Grid>
+
+          {/* Right side: Order summary */}
+          <Grid item xs={12} md={5}>
+            <Paper
+              elevation={3}
+              sx={{
+                p: 4,
+                borderRadius: 2,
+                position: 'sticky',
+                top: 24,
+                boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
+              }}
+            >
+              <Typography variant="h5" fontWeight={600} mb={3}>
+                Order Summary
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
+
+              {/* Theo từng shop */}
+              {Object.entries(groupedByShop).map(([shopId, shopGroup]) => (
+                <Box key={shopId} sx={{ mb: 3, p: 2, border: "1px solid #eee", borderRadius: 2 }}>
+                  <Typography variant="subtitle1" fontWeight={600} color="#0F52BA">
+                    {shopGroup.shop?.storeName || "Shop"}
+                  </Typography>
+
+                  <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+                    <Typography variant="body2">Subtotal:</Typography>
+                    <Typography variant="body2">${shopGroup.subtotal.toLocaleString()}</Typography>
+                  </Box>
+
+                  <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+                    <Typography variant="body2">Shipping Fee:</Typography>
+                    <Typography variant="body2">${shopGroup.shippingFee.toLocaleString()}</Typography>
+                  </Box>
+
+                  <Divider sx={{ my: 1 }} />
+
+                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Typography variant="body1" fontWeight={600}>Shop Total:</Typography>
+                    <Typography variant="body1" fontWeight={700} color="#0F52BA">
+                      ${(shopGroup.subtotal + shopGroup.shippingFee).toLocaleString()}
+                    </Typography>
+                  </Box>
+                </Box>
+              ))}
+
+              <Divider sx={{ my: 2 }} />
+
+              {/* Discount */}
+              {discount > 0 && (
+                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2, color: "success.main" }}>
+                  <Typography variant="h6" fontWeight={600}>Discount:</Typography>
+                  <Typography variant="h6" fontWeight={700}>
+                    -${discount.toLocaleString()}
+                  </Typography>
+                </Box>
+              )}
+
+              {/* Grand Total */}
+              <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                <Typography variant="h6" fontWeight={600}>Grand Total:</Typography>
+                <Typography variant="h6" fontWeight={700} color="#0F52BA">
+                  ${grandTotal.toLocaleString()}
+                </Typography>
+              </Box>
+
+
+              <Button
+                variant="contained"
+                fullWidth
+                size="large"
+                onClick={handlePlaceOrder}
+                disabled={isProcessing || selectedProducts.length === 0}
+                sx={{
+                  py: 1.5,
+                  backgroundColor: '#0F52BA',
+                  '&:hover': {
+                    backgroundColor: '#0A3C8A',
+                  },
+                  fontWeight: 600
+                }}
+              >
+                {isProcessing ? (
+                  <>
+                    <CircularProgress size={24} sx={{ color: 'white', mr: 1 }} />
+                    Processing...
+                  </>
+                ) : (
+                  'Place Order'
+                )}
+              </Button>
+
+              <Box sx={{
+                mt: 3,
+                p: 2,
+                backgroundColor: 'rgba(15, 82, 186, 0.04)',
+                borderRadius: 2,
+                border: '1px dashed #0F52BA'
+              }}>
+                <Typography variant="body2" color="text.secondary">
+                  By placing your order, you agree to our terms and conditions.
+                  For Cash on Delivery orders, please have the exact amount ready at the time of delivery.
+                </Typography>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      </motion.div>
+
+      {/* Add new address modal */}
+      <Modal
+        isOpen={isAddressModalOpen}
+        onRequestClose={() => setIsAddressModalOpen(false)}
+        style={customModalStyles}
+        contentLabel="Add New Address"
+        ariaHideApp={false}
+      >
+        <Box sx={{ p: 4 }}>
+          <Typography variant="h5" fontWeight={600} mb={3}>
+            Add New Address
+          </Typography>
+
+          {phoneError && (
+            <Typography variant="body2" color="error" sx={{ mb: 2 }}>
+              {phoneError}
+            </Typography>
+          )}
+
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Full Name"
+                value={newAddress.fullName}
+                onChange={(e) => setNewAddress({ ...newAddress, fullName: e.target.value })}
+                variant="outlined"
+                size="small"
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Phone Number"
+                value={newAddress.phone}
+                onChange={(e) => setNewAddress({ ...newAddress, phone: e.target.value })}
+                variant="outlined"
+                size="small"
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Street Address"
+                value={newAddress.street}
+                onChange={(e) => setNewAddress({ ...newAddress, street: e.target.value })}
+                variant="outlined"
+                size="small"
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth margin="normal" variant="outlined" size="small">
+                <InputLabel id="province-label" shrink>City / Province</InputLabel>
+                <Select
+                  labelId="province-label"
+                  value={selectedProvince || ''}
+                  onChange={handleProvinceChange}
+                  label="City / Province"
+                  displayEmpty
+                  notched
+                >
+                  <MenuItem value="">Chọn tỉnh/thành phố</MenuItem>
+                  {provinces.map(p => (
+                    <MenuItem key={p.ProvinceID} value={p.ProvinceID}>{p.ProvinceName}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth margin="normal" variant="outlined" size="small">
+                <InputLabel id="district-label" shrink>State / District</InputLabel>
+                <Select
+                  labelId="district-label"
+                  value={selectedDistrict || ''}
+                  onChange={handleDistrictChange}
+                  label="State / District"
+                  displayEmpty
+                  disabled={!selectedProvince}
+                  notched
+                >
+                  <MenuItem value="">Chọn quận/huyện</MenuItem>
+                  {districts.map(d => (
+                    <MenuItem key={d.DistrictID} value={d.DistrictID}>{d.DistrictName}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth margin="normal" variant="outlined" size="small">
+                <InputLabel id="ward-label" shrink>Ward</InputLabel>
+                <Select
+                  labelId="ward-label"
+                  value={selectedWard || ''}
+                  onChange={handleWardChange}
+                  label="Ward"
+                  displayEmpty
+                  disabled={!selectedDistrict}
+                  notched
+                >
+                  <MenuItem value="">Chọn phường/xã</MenuItem>
+                  {wards.map(w => (
+                    <MenuItem key={w.WardCode} value={w.WardCode}>{w.WardName}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Country"
+                value={newAddress.country}
+                onChange={(e) => setNewAddress({ ...newAddress, country: e.target.value })}
+                variant="outlined"
+                size="small"
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={newAddress.isDefault}
+                    onChange={(e) => setNewAddress({ ...newAddress, isDefault: e.target.checked })}
+                    sx={{ color: '#0F52BA', '&.Mui-checked': { color: '#0F52BA' } }}
+                  />
+                }
+                label="Set as default address"
+              />
+            </Grid>
+          </Grid>
+
+          {/* Thêm dropdown chọn tỉnh, quận/huyện, phường/xã */}
+
+
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3, gap: 2 }}>
+            <Button
+              variant="outlined"
+              onClick={() => setIsAddressModalOpen(false)}
+              sx={{
+                borderColor: 'grey.500',
+                color: 'grey.700',
+                '&:hover': {
+                  borderColor: 'grey.700',
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                }
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleAddAddress}
+              sx={{
+                backgroundColor: '#0F52BA',
+                '&:hover': {
+                  backgroundColor: '#0A3C8A',
+                }
+              }}
+            >
+              Save Address
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+    </Container>
+  );
+};
+
+export default Checkout;

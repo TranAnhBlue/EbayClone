@@ -1,0 +1,2114 @@
+[{
+  "_id": {
+    "$oid": "60d21b4667d0d8992e610c8f"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "orderDate": {
+    "$date": "2023-06-24T14:30:00.000Z"
+  },
+  "totalPrice": 799.99,
+  "status": "shipped",
+  "createdAt": {
+    "$date": "2023-06-24T14:30:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-25T09:15:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "60d21b4667d0d8992e610ca5"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "orderDate": {
+    "$date": "2023-06-26T16:45:00.000Z"
+  },
+  "totalPrice": 49.99,
+  "status": "shipped",
+  "createdAt": {
+    "$date": "2023-06-26T16:45:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:39.118Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6877e0ac5216b9c2e347371f"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-16T17:26:04.447Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-16T17:26:04.448Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:39.116Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6877e1665216b9c2e3473828"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-16T17:29:10.090Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-16T17:29:10.091Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:39.113Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6877e4020bd063264e9e277a"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-16T17:40:18.101Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-16T17:40:18.101Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:39.112Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6877f5790bd063264e9e2aa9"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-16T18:54:49.689Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-16T18:54:49.690Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-16T18:54:49.690Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6878748f123a66598d7a56dd"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 1599.98,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-17T03:57:03.880Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T03:57:03.884Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:39.110Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687877dbf487c2b4d1990101"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T04:11:07.192Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T04:11:07.192Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.072Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687878f37f3707c13e4249f8"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T04:15:47.720Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T04:15:47.721Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.131Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68787bee6b781e1c9fd08e52"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T04:28:30.941Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T04:28:30.942Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.141Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68787d8d93b4c61f2cf119b4"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T04:35:25.063Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T04:35:25.064Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.149Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6878809c768512009caf4795"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 1599.98,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T04:48:28.257Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T04:48:28.258Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.155Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687880d9768512009caf4843"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T04:49:29.895Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T04:49:29.895Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.162Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687881ce768512009caf48d0"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T04:53:34.144Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T04:53:34.144Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.166Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687883cd1a70bae7a54b2b33"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T05:02:05.868Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T05:02:05.871Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.172Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687884801a70bae7a54b2b6c"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-17T05:05:04.220Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T05:05:04.221Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-17T05:05:04.221Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687885736d721c5cbd0f37d1"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-17T05:09:07.736Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T05:09:07.737Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-17T05:09:07.737Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687885b96d721c5cbd0f3826"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 3999.95,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-17T05:10:17.903Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T05:10:17.903Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-17T05:10:17.903Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687885ea6d721c5cbd0f386a"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 3999.95,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T05:11:06.246Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T05:11:06.246Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.182Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687886056d721c5cbd0f38a5"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 5599.93,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-17T05:11:33.804Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T05:11:33.805Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-17T05:11:33.805Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687890ea0c10b058457bea24"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T05:58:02.329Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T05:58:02.330Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.190Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6878911a0c10b058457bea67"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 3399.9700000000003,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T05:58:50.323Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T05:58:50.324Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.195Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687891220c10b058457bea7c"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 3399.9700000000003,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T05:58:58.867Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T05:58:58.868Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.203Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6878b35559f0d5c38338cabb"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-17T08:24:53.613Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T08:24:53.614Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.213Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6878c4bfbf464d0b6d7daac4"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-17T09:39:11.468Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-17T09:39:11.471Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-17T09:39:11.471Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6879e3c3db800e232f0c6650"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 4799.9400000000005,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-18T06:03:47.208Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-18T06:03:47.210Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-18T06:03:47.210Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6879e533d5af6ecabee78de1"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 6399.92,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-18T06:09:55.702Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-18T06:09:55.704Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.222Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6879e56bd5af6ecabee78e84"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 7199.91,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-18T06:10:51.988Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-18T06:10:51.989Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-18T06:10:51.989Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6879e5e6d5af6ecabee78f34"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 4799.9400000000005,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-18T06:12:54.333Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-18T06:12:54.334Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-18T06:12:54.334Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6879e6d2d5af6ecabee790d2"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 3199.96,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-18T06:16:50.304Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-18T06:16:50.306Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.231Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687fbcb712c8f7ff28a75e21"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 1599.98,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-22T16:30:47.104Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T16:30:47.106Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.239Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687fbdd69aac43a05ccbc66a"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-22T16:35:34.878Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T16:35:34.882Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-22T16:35:34.882Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687fbe0f9aac43a05ccbc6b2"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 3999.95,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-22T16:36:31.163Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T16:36:31.164Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.246Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687fbe259aac43a05ccbc6f7"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 5599.93,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-22T16:36:53.698Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T16:36:53.698Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-22T16:36:53.698Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687fbeda9c7988f81e309cef"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 4799.9400000000005,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-22T16:39:54.387Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T16:39:54.388Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-22T16:39:54.388Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687fc140fa897955871cafc9"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 5599.93,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-22T16:50:08.186Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T16:50:08.187Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.256Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687fc66984e62469b68d1746"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 6399.92,
+  "status": "processing",
+  "orderDate": {
+    "$date": "2025-07-22T17:12:09.771Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T17:12:09.771Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-22T17:12:38.566Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687fcbad6fa72cd4c3fafbe3"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 1599.98,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-22T17:34:37.432Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T17:34:37.432Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.263Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687fcc743206e9147a0ff9fe"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 3199.96,
+  "status": "processing",
+  "orderDate": {
+    "$date": "2025-07-22T17:37:56.657Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T17:37:56.660Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-22T17:40:00.252Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687fccd795a72f0838f53b98"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-22T17:39:35.877Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T17:39:35.878Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.269Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68800e8112519642912aeef0"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-22T22:19:45.678Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-22T22:19:45.679Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:35.637Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "688051f3b2338f453606b960"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-23T03:07:31.530Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T03:07:31.530Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:35.721Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "688056b0b2338f453606e14d"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-23T03:27:44.421Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T03:27:44.421Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:35.719Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "688059c6b2338f453606e3ce"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-23T03:40:54.673Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T03:40:54.673Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.275Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6881040e1a1be0d59d271574"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-23T15:47:26.262Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T15:47:26.263Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:35.669Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "688107121a1be0d59d2718d7"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-23T16:00:18.837Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:00:18.837Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:35.665Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68810ac78e0307c89ddcb038"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-23T16:16:07.128Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:16:07.129Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:16:07.129Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68810b198e0307c89ddcb099"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-23T16:17:29.095Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:17:29.095Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:31:35.632Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68810fddfaafc6da9804e212"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 4699.96,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-23T16:37:49.956Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:37:49.956Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.282Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68810fe6faafc6da9804e228"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 4699.96,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-23T16:37:58.891Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:37:58.891Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.290Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68810ff9faafc6da9804e28c"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 3399.9700000000003,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-23T16:38:17.372Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:38:17.372Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.296Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68811016d17ffd361c3d3af1"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 4199.96,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-23T16:38:46.835Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:38:46.835Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.304Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6881105e0888e7c7c89133cf"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-23T16:39:58.410Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:39:58.414Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.311Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "688110720888e7c7c8913425"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 1349.98,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-23T16:40:18.175Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:40:18.176Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.316Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68811256e3186dad2cc58c0c"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 4699.96,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-23T16:48:22.244Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:48:22.245Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:48:22.245Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "688113a2214f12ef68db6539"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 4199.96,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-23T16:53:54.139Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T16:53:54.140Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T16:56:24.078Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "688115949ced608a009cbd79"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-23T17:02:12.973Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T17:02:12.973Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T17:03:13.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68811a189ced608a009cc11d"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 3399.9700000000003,
+  "status": "shipped",
+  "orderDate": {
+    "$date": "2025-07-23T17:21:28.278Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-23T17:21:28.278Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-23T17:28:19.306Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6881ac34c63354632aa9c1fd"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 799.99,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-07-24T03:44:52.871Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-24T03:44:52.876Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-24T03:44:52.876Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6881b09124e3fa498a81f91d"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 3899.9700000000003,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-24T04:03:29.548Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-24T04:03:29.549Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.327Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6881b2d6ef0808a5548728e9"
+  },
+  "buyerId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "addressId": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "totalPrice": 2599.98,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-07-24T04:13:10.983Z"
+  },
+  "createdAt": {
+    "$date": "2025-07-24T04:13:10.984Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.335Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "689c2fd0580487ac8ab913fa"
+  },
+  "buyerId": {
+    "$oid": "689c2f2f580487ac8ab912ee"
+  },
+  "addressId": {
+    "$oid": "689c2fcc580487ac8ab913f3"
+  },
+  "totalPrice": 3499.99,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-08-13T06:25:20.493Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-13T06:25:20.493Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-13T06:25:20.493Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a7513da1f727de6f579e9e"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 9900,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-08-21T17:02:53.805Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T17:02:53.805Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.344Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a75388a1f727de6f579f1b"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 10000,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-08-21T17:12:40.935Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T17:12:40.937Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T17:12:40.937Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a75578a1f727de6f579f8d"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 30000,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-08-21T17:20:56.764Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T17:20:56.764Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.352Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a7561ca1f727de6f57a025"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 10000,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-08-21T17:23:40.941Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T17:23:40.942Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T17:23:40.942Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a7570da1f727de6f57a088"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 20000,
+  "status": "processing",
+  "orderDate": {
+    "$date": "2025-08-21T17:27:41.503Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T17:27:41.504Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T17:28:47.527Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a757aea1f727de6f57a178"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 20000,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-08-21T17:30:22.134Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T17:30:22.134Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.357Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a75939a1f727de6f57a344"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 30000,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-08-21T17:36:57.104Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T17:36:57.104Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T17:36:57.104Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a75c4daaef4eb31a023f89"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 10000,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-08-21T17:50:05.514Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T17:50:05.516Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T17:50:05.516Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a75df97531013d6c5110a1"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 20000,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-08-21T17:57:13.713Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T17:57:13.713Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.364Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a7601528c8dd1c0047242c"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 49001,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-08-21T18:06:13.210Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T18:06:13.211Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:06:13.211Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a7604a28c8dd1c004724fb"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 49001,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-08-21T18:07:06.134Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T18:07:06.134Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.370Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a760a828c8dd1c0047254f"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 49001,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-08-21T18:08:40.173Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T18:08:40.174Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:08:40.174Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a761aa1a3fb45cad3833de"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 54000,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-08-21T18:12:58.721Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T18:12:58.721Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:12:58.721Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a766aa3d1f6d506bd7e08d"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 64000,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-08-21T18:34:18.149Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T18:34:18.149Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:34:18.149Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a7675f3d1f6d506bd7e167"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 54000,
+  "status": "processing",
+  "orderDate": {
+    "$date": "2025-08-21T18:37:19.217Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T18:37:19.217Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:39:25.930Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a767fa3d1f6d506bd7e254"
+  },
+  "buyerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "addressId": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "totalPrice": 54000,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-08-21T18:39:54.218Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T18:39:54.218Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:04:00.379Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a768d43d1f6d506bd7e316"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 44000,
+  "status": "shipping",
+  "orderDate": {
+    "$date": "2025-08-21T18:43:32.691Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T18:43:32.691Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:06:18.434Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a76bca97624bfaa5c2bdac"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 88000,
+  "status": "shipping",
+  "orderDate": {
+    "$date": "2025-08-21T18:56:10.961Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-21T18:56:10.963Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:09:13.840Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aea038ea8d612e1067bc44"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a806c65655434d640d2e03"
+  },
+  "totalPrice": 67002,
+  "status": "shipping",
+  "orderDate": {
+    "$date": "2025-08-27T06:05:44.041Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:05:44.042Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:06:18.435Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aea097ea8d612e1067bd3b"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a806c65655434d640d2e03"
+  },
+  "totalPrice": 31001,
+  "status": "shipping",
+  "orderDate": {
+    "$date": "2025-08-27T06:07:19.130Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:07:19.130Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:07:48.655Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aea79735a204fde5c2d830"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 93000,
+  "status": "shipping",
+  "orderDate": {
+    "$date": "2025-08-27T06:37:11.547Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:37:11.549Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:37:51.015Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aea83b35a204fde5c2d95c"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 83000,
+  "status": "shipping",
+  "orderDate": {
+    "$date": "2025-08-27T06:39:55.213Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:39:55.213Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:42:11.027Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aea8cff52f72f4c5849ed8"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 10001.36,
+  "status": "pending",
+  "orderDate": {
+    "$date": "2025-08-27T06:42:23.018Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:42:23.018Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:42:23.018Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aea8e3f52f72f4c5849f8b"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 10001.36,
+  "status": "shipping",
+  "orderDate": {
+    "$date": "2025-08-27T06:42:43.622Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:42:43.622Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:43:01.975Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aea934f52f72f4c584a0af"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 15002.72,
+  "status": "shipping",
+  "orderDate": {
+    "$date": "2025-08-27T06:44:04.578Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:44:04.578Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:44:20.888Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aea9edf52f72f4c584a26e"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 14952.72,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-08-27T06:47:09.627Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:47:09.628Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T07:18:00.046Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aeab95f52f72f4c584a386"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 10001.36,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-08-27T06:54:13.667Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:54:13.667Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T07:26:00.053Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aeac2cf52f72f4c584a3e1"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 10001.36,
+  "status": "shipping",
+  "orderDate": {
+    "$date": "2025-08-27T06:56:44.946Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:56:44.948Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T06:57:16.636Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aeacc4f52f72f4c584a5c7"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 15002.72,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-08-27T06:59:16.276Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:59:16.277Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T07:30:00.068Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68aeace0f52f72f4c584a62d"
+  },
+  "buyerId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "addressId": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "totalPrice": 14952.72,
+  "status": "cancelled",
+  "orderDate": {
+    "$date": "2025-08-27T06:59:44.838Z"
+  },
+  "createdAt": {
+    "$date": "2025-08-27T06:59:44.839Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-27T07:30:00.073Z"
+  },
+  "__v": 0
+}]

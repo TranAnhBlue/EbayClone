@@ -1,0 +1,56 @@
+[{
+  "_id": {
+    "$oid": "60d21b4667d0d8992e610c8b"
+  },
+  "sellerId": {
+    "$oid": "60d21b4667d0d8992e610c89"
+  },
+  "storeName": "Jane's Electronics",
+  "description": "Quality electronic products at affordable prices",
+  "bannerImageURL": "https://eastatlanticnetwork.com/wp-content/uploads/2023/08/Sales-and-installations-of-electronics-600x434.jpg",
+  "status": "approved",
+  "createdAt": {
+    "$date": "2023-06-22T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-16T05:02:04.932Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "689c30a8580487ac8ab91433"
+  },
+  "sellerId": {
+    "$oid": "689c2f2f580487ac8ab912ee"
+  },
+  "storeName": "ABC company",
+  "description": "no description",
+  "bannerImageURL": "",
+  "status": "approved",
+  "createdAt": {
+    "$date": "2025-08-13T06:28:56.971Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T14:15:31.808Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a7694b3d1f6d506bd7e3eb"
+  },
+  "sellerId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "storeName": "MinhVN Company",
+  "description": "ádasdadas",
+  "bannerImageURL": "",
+  "status": "approved",
+  "createdAt": {
+    "$date": "2025-08-21T18:45:31.625Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:47:50.372Z"
+  },
+  "__v": 0
+}]

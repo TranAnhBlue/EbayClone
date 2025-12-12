@@ -1,0 +1,211 @@
+[{
+  "_id": {
+    "$oid": "60d21b4667d0d8992e610c8c"
+  },
+  "userId": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "fullName": "John Doe",
+  "phone": "1234567890",
+  "street": "123 Main St",
+  "city": "Thành phố Nam Định",
+  "state": "Nam Định",
+  "country": "Việt Nam",
+  "isDefault": true,
+  "createdAt": {
+    "$date": "2023-06-22T15:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-22T15:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "689c2fcc580487ac8ab913f3"
+  },
+  "userId": {
+    "$oid": "689c2f2f580487ac8ab912ee"
+  },
+  "fullName": "Tanh",
+  "phone": "0123456789",
+  "street": "nowhere",
+  "city": "Ha noi",
+  "state": "Ha noi",
+  "country": "Viet Nam",
+  "isDefault": false,
+  "createdAt": {
+    "$date": "2025-08-13T06:25:16.768Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T13:58:19.957Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a725fb29287b90c70f6bff"
+  },
+  "userId": {
+    "$oid": "689c2f2f580487ac8ab912ee"
+  },
+  "fullName": "Tuan",
+  "phone": "0123456789",
+  "street": "105 nowhere",
+  "city": "Thành phố Nam Định",
+  "state": "Nam Định",
+  "country": "Việt Nam",
+  "locationGHN": {
+    "province_id": 231,
+    "district_id": 1613,
+    "ward_code": "91411",
+    "ward": "Phường Hưng Lộc"
+  },
+  "isDefault": false,
+  "createdAt": {
+    "$date": "2025-08-21T13:58:19.976Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T14:05:52.730Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a727c029287b90c70f6d7e"
+  },
+  "userId": {
+    "$oid": "689c2f2f580487ac8ab912ee"
+  },
+  "fullName": "ABC",
+  "phone": "0987654321",
+  "street": "123abc",
+  "city": "Huyện Vân Canh",
+  "state": "Bình Định",
+  "country": "Việt Nam",
+  "locationGHN": {
+    "province_id": 262,
+    "district_id": 3312,
+    "ward_code": "370906",
+    "ward": "Xã Canh Thuận"
+  },
+  "isDefault": true,
+  "createdAt": {
+    "$date": "2025-08-21T14:05:52.735Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T14:05:52.735Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a72b78777055a538a74132"
+  },
+  "userId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "fullName": "Minh",
+  "phone": "0987654321",
+  "street": "sdasdasd",
+  "city": "Huyện Tuy An",
+  "state": "Phú Yên",
+  "country": "Việt Nam",
+  "locationGHN": {
+    "province_id": 260,
+    "district_id": 3284,
+    "ward_code": "390410",
+    "ward": "Xã An Mỹ"
+  },
+  "isDefault": true,
+  "createdAt": {
+    "$date": "2025-08-21T14:21:44.155Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:40:36.348Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a768243d1f6d506bd7e293"
+  },
+  "userId": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "fullName": "adsada",
+  "phone": "0123456789",
+  "street": "sdasdasdas",
+  "city": "huyện Sốp Cộp",
+  "state": "Sơn La",
+  "country": "Việt Nam",
+  "locationGHN": {
+    "province_id": 266,
+    "district_id": 3266,
+    "ward_code": null,
+    "ward": ""
+  },
+  "isDefault": false,
+  "createdAt": {
+    "$date": "2025-08-21T18:40:36.351Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:40:36.351Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a768ce3d1f6d506bd7e30e"
+  },
+  "userId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "fullName": "AnBaTuKhang",
+  "phone": "0987654321",
+  "street": "âsasasa",
+  "city": "Quận 8",
+  "state": "Hồ Chí Minh",
+  "country": "Việt Nam",
+  "locationGHN": {
+    "province_id": 202,
+    "district_id": 1450,
+    "ward_code": "91625",
+    "ward": "Phường Xóm Củi"
+  },
+  "isDefault": true,
+  "createdAt": {
+    "$date": "2025-08-21T18:43:26.753Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:43:26.753Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a806c65655434d640d2e03"
+  },
+  "userId": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "fullName": "AnBatukhang",
+  "phone": "0912345678",
+  "street": "adasdsdsd",
+  "city": "Quận Nam Từ Liêm",
+  "state": "Hà Nội",
+  "country": "Việt Nam",
+  "locationGHN": {
+    "province_id": 201,
+    "district_id": 3440,
+    "ward_code": "13010",
+    "ward": "Phường Xuân Phương"
+  },
+  "isDefault": false,
+  "createdAt": {
+    "$date": "2025-08-22T05:57:26.286Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-22T05:57:26.286Z"
+  },
+  "__v": 0
+}]

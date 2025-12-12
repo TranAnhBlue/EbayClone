@@ -1,0 +1,126 @@
+[{
+  "_id": {
+    "$oid": "60d21b4667d0d8992e610c88"
+  },
+  "username": "johndoe",
+  "fullname": "John Doe",
+  "email": "thangnguyen11112002@gmail.com",
+  "password": "$2b$10$GHVNmgYB9W9RE2Fs6BCAsOeMl5ec.KjMQ8sOTHRmaak0yJ3qZGkBe",
+  "role": "buyer",
+  "avatarURL": "https://example.com/avatars/john.jpg",
+  "action": "unlock",
+  "createdAt": {
+    "$date": "2023-06-21T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-24T07:12:57.150Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "60d21b4667d0d8992e610c89"
+  },
+  "username": "janesmith",
+  "fullname": "Jane Smith",
+  "email": "thangndhe172360@fpt.edu.vn",
+  "password": "$2b$10$aVlJe6bEhcR6BHZ2RequteMMjVlEJ9Wbv.RZ7rsWPs9mIL2wyhMTC",
+  "role": "seller",
+  "avatarURL": "https://sm.ign.com/t/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.600.jpg",
+  "action": "unlock",
+  "createdAt": {
+    "$date": "2023-06-21T11:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-16T05:02:34.681Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "60d21b4667d0d8992e610c8a"
+  },
+  "username": "admin",
+  "fullname": "Admin User",
+  "email": "winfourt4@gmail.com",
+  "password": "$2b$10$04H3KSPmEpRVaKn8DANpleVj9/lwCs3gTuu5EeJTU0iEb.hK9Qbom",
+  "role": "admin",
+  "avatarURL": "https://example.com/avatars/admin.jpg",
+  "action": "unlock",
+  "createdAt": {
+    "$date": "2023-06-21T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-24T06:26:46.325Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "689c2f2f580487ac8ab912ee"
+  },
+  "username": "traymay69",
+  "fullname": "Tanh",
+  "email": "ntanh2811@gmail.com",
+  "password": "$2b$10$HwD/XxTjsoNZwwhDqibvYOigJH7EiKb/9ZPzA1.BhPpyvDfudlAxy",
+  "role": "seller",
+  "action": "unlock",
+  "createdAt": {
+    "$date": "2025-08-13T06:22:39.348Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-13T06:28:56.961Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a72925777055a538a73f74"
+  },
+  "username": "Admin",
+  "fullname": "admin",
+  "email": "ntanhtft@gmail.com",
+  "password": "$2b$10$54K12TIsltwU.Imt6/7yD.DoxKSNGs8o1jlcS.R7kbK3UHxEe7A2y",
+  "role": "admin",
+  "action": "unlock",
+  "createdAt": {
+    "$date": "2025-08-21T14:11:49.654Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T14:11:49.654Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a72b4a777055a538a740f1"
+  },
+  "username": "Minhvn259",
+  "fullname": "Minh",
+  "email": "lonhtrang03052k@gmail.com",
+  "password": "$2b$10$QVY3x81v.yokH8vKxoyg0.d4YvpGZ4Q3LzliyEpODV5qjk8NStroy",
+  "role": "seller",
+  "action": "unlock",
+  "createdAt": {
+    "$date": "2025-08-21T14:20:58.316Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:45:31.616Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a768963d1f6d506bd7e2ca"
+  },
+  "username": "anBaTuKhang",
+  "fullname": "anBaTuKhang",
+  "email": "abtk@gmail.com",
+  "password": "$2b$10$.rPmAxZUlV3y6yaDS6OGseHYq0YkyBH3g59lnEywlT59u5neWGqZG",
+  "role": "buyer",
+  "action": "unlock",
+  "createdAt": {
+    "$date": "2025-08-21T18:42:30.786Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-21T18:42:30.786Z"
+  },
+  "__v": 0
+}]
