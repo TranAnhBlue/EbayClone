@@ -17,11 +17,14 @@ module.exports = {
         xl: "1280px",
       },
       fontFamily: {
-        bodyFont: ["DM Sans", "sans-serif"],
-        titleFont: ["Poppins", "sans-serif"],
+        bodyFont: ["Inter", "sans-serif"],
+        titleFont: ["Montserrat", "sans-serif"],
       },
       colors: {
-        primeColor: "#0F52BA", // Updated to a modern blue
+        primeColor: "#0064D2", // ebay-like blue
+        ebayRed: "#ff3333",
+        ebayYellow: "#ffd200",
+        ebayGreen: "#86bc25",
         lightText: "#6D6D6D",
         darkBg: "#1E1E1E",
         lightBg: "#F9F9F9",

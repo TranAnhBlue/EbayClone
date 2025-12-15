@@ -5,6 +5,7 @@ import { HiMenuAlt2 } from "react-icons/hi";
 import { motion } from "framer-motion";
 import { logo, logoLight } from "../../../assets/images";
 import Image from "../../designLayouts/Image";
+import CartIcon from "../../Icons/CartIcon";
 import { navBarList } from "../../../constants";
 import Flex from "../../designLayouts/Flex";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,8 @@ const Header = () => {
   const [category, setCategory] = useState(false);
   const [brand, setBrand] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchCategory, setSearchCategory] = useState('all');
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -78,84 +81,62 @@ const Header = () => {
   };
 
   return (
-    <div className={`w-full h-20 sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md' : 'bg-white'} border-b-[1px] border-b-gray-200`}>
-      <nav className="h-full px-4 max-w-container mx-auto relative">
-        <Flex className="flex items-center justify-between h-full">
-          <Link to="/">
-            <div className="transform hover:scale-105 transition-transform duration-300">
-              <Image className="w-32 object-cover" imgSrc={logo} />
-            </div>
-          </Link>
-          <div>
-            {showMenu && (
-              <motion.ul
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="flex items-center w-auto z-50 p-0 gap-2"
-              >
-                <>
-                  {navBarList.map(({ _id, title, link }) => (
-                    <NavLink
-                      key={_id}
-                      className={({ isActive }) => 
-                        `flex font-normal hover:font-bold w-20 h-6 justify-center items-center px-12 text-base ${isActive ? 'text-[#0F52BA] font-bold' : 'text-[#767676]'} hover:text-[#0F52BA] hover:underline underline-offset-[4px] decoration-[1px] md:border-r-[2px] border-r-gray-300 hoverEffect last:border-r-0 transition-colors`}
-                      onClick={(e) => {
-                        if (isAuthenticated && user.role === 'seller' && title === 'Shop') {
-                          e.preventDefault();
-                          navigate('/overview');
-                        }
-                      }}
-                      to={link}
-                      state={{ data: location.pathname.split("/")[1] }}
-                    >
-                      <li>{title}</li>
-                    </NavLink>
-                  ))}
-                  
-                  {/* User info display */}
-                  {isAuthenticated ? (
-                    <div className="flex items-center ml-4 space-x-4">
-                      <span className="text-[#262626] font-medium">
-                        Hello, {user.username}
-                      </span>
-                      {/* Show "Become a Seller" button only for buyers */}
-                      {user.role === 'buyer' && (
-                        <button 
-                          onClick={handleBecomeASeller}
-                          className="border border-[#0F52BA] text-[#0F52BA] px-4 py-1 rounded hover:bg-[#0F52BA] hover:text-white transition-colors duration-300"
-                        >
-                          Become a Seller
-                        </button>
-                      )}
-                      <button 
-                        onClick={handleLogout}
-                        className="bg-[#0F52BA] text-white px-4 py-1 rounded hover:bg-[#0A3C8A] transition-colors duration-300 shadow-md hover:shadow-lg"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center ml-4 space-x-4">
-                      <Link to="/signin">
-                        <button className="bg-[#0F52BA] text-white px-4 py-1 rounded hover:bg-[#0A3C8A] transition-colors duration-300 shadow-md hover:shadow-lg">
-                          Sign In
-                        </button>
-                      </Link>
-                      <Link to="/signup">
-                        <button className="border border-[#0F52BA] text-[#0F52BA] px-4 py-1 rounded hover:bg-[#0F52BA] hover:text-white transition-colors duration-300">
-                          Sign Up
-                        </button>
-                      </Link>
-                    </div>
+    <div className={`w-full sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md' : 'bg-white'}`}>
+      <nav className="h-full px-4 max-w-container mx-auto relative ebay-header py-4">
+        <Flex className="flex items-center justify-between h-full gap-4">
+          <div className="flex items-center gap-4">
+            <Link to="/">
+              <div className="transform hover:scale-105 transition-transform duration-300">
+                <Image className="w-32 object-contain" imgSrc={logo} />
+              </div>
+            </Link>
+          </div>
+
+          {/* Center search */}
+          <div className="hidden md:block flex-1">
+            <form className="ebay-search" onSubmit={(e) => {
+                e.preventDefault();
+                const params = new URLSearchParams();
+                if (searchTerm) params.set('search', searchTerm);
+                if (searchCategory && searchCategory !== 'all') params.set('category', searchCategory);
+                navigate(`/shop?${params.toString()}`);
+              }}>
+              <select value={searchCategory} onChange={(e) => setSearchCategory(e.target.value)} className="border-r">
+                <option value="all">All categories</option>
+                <option value="electronics">Electronics</option>
+                <option value="fashion">Fashion</option>
+                <option value="home">Home</option>
+              </select>
+              <input type="text" placeholder="Search for anything" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+              <button type="submit">Search</button>
+            </form>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="hidden md:block">
+              {isAuthenticated ? (
+                <div className="flex items-center gap-3">
+                  <span className="text-[#262626]">Hello, {user.username}</span>
+                  {user.role === 'buyer' && (
+                    <button onClick={handleBecomeASeller} className="border border-primeColor text-primeColor px-3 py-1 rounded">Sell</button>
                   )}
-                </>
-              </motion.ul>
-            )}
-            <HiMenuAlt2
-              onClick={() => setSidenav(!sidenav)}
-              className="inline-block md:hidden cursor-pointer w-8 h-6 absolute top-6 right-4 text-[#0F52BA]"
-            />
+                  <button onClick={handleLogout} className="bg-primeColor text-white px-3 py-1 rounded">Logout</button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Link to="/signin"><button className="bg-primeColor text-white px-3 py-1 rounded">Sign In</button></Link>
+                  <Link to="/signup"><button className="border border-primeColor text-primeColor px-3 py-1 rounded">Sign Up</button></Link>
+                </div>
+              )}
+            </div>
+            <Link to="/cart">
+              <div className="flex items-center gap-2">
+                <CartIcon />
+                <span className="text-sm text-gray-700">Cart</span>
+              </div>
+            </Link>
+            <HiMenuAlt2 onClick={() => setSidenav(!sidenav)} className="inline-block md:hidden cursor-pointer w-8 h-6 text-primeColor" />
+          </div>
             {sidenav && (
               <div className="fixed top-0 left-0 w-full h-screen bg-black text-gray-200 bg-opacity-80 z-50">
                 <motion.div
