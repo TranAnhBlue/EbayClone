@@ -79,7 +79,7 @@ const Home = () => {
   }, [navigate]);
 
   // Get category list
-  const fetchCategories = async () => {
+  const fetchCategories = async () => { 
     try {
       setLoadingCategories(true);
       const response = await axios.get(`${API_BASE_URL}/api/categories`);
