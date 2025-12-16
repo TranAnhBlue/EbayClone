@@ -5,6 +5,7 @@ import { HiMenuAlt2 } from "react-icons/hi";
 import { motion } from "framer-motion";
 import { logo, logoLight } from "../../../assets/images";
 import Image from "../../designLayouts/Image";
+import CartIcon from "../../Icons/CartIcon";
 import { navBarList } from "../../../constants";
 import Flex from "../../designLayouts/Flex";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,8 @@ const Header = () => {
   const [category, setCategory] = useState(false);
   const [brand, setBrand] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchCategory, setSearchCategory] = useState('all');
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
