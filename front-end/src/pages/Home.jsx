@@ -286,7 +286,7 @@ const Home = () => {
       <Container maxWidth="lg" sx={{ py: 5 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
           <Typography variant="h4" gutterBottom sx={{ fontWeight: 700, color: '#0F52BA' }}>
-            Discover Products
+            Today's Deals
           </Typography>
         </Box>
         
@@ -355,7 +355,7 @@ const Home = () => {
               }
             }}
           >
-            Discover Products
+            Today's Deals
           </Typography>
         </Box>
       </motion.div>
