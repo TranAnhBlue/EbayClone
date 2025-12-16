@@ -1,68 +1,95 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { FaSearch, FaShoppingCart, FaExchangeAlt } from "react-icons/fa";
-import { FiUser, FiShoppingBag, FiMessageSquare, FiLogOut } from "react-icons/fi";
+import { FaSearch, FaChevronDown } from "react-icons/fa";
+import {
+  FiUser,
+  FiShoppingBag,
+  FiMessageSquare,
+  FiLogOut,
+  FiBell,
+} from "react-icons/fi";
 import { IoStorefrontOutline } from "react-icons/io5";
-import { MdOutlineHistory, MdOutlineRateReview, MdOutlineLocalShipping } from "react-icons/md";
-import { RiUserSettingsLine, RiHomeSmileLine, RiShieldLine } from "react-icons/ri";
-import Flex from "../../designLayouts/Flex";
+import {
+  MdOutlineHistory,
+  MdOutlineRateReview,
+  MdFavoriteBorder,
+} from "react-icons/md";
+import { RiUserSettingsLine, RiHomeSmileLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import Image from "../../designLayouts/Image";
+import logoImg from "../../../assets/images/shopiiLogo.png";
 import {
   resetUserInfo,
   setUserInfo,
   setProducts,
-  calculateCartTotalCount,
 } from "../../../redux/orebiSlice";
 
 const HeaderBottom = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const ref = useRef();
+  const categoryRef = useRef();
 
   // Get authentication info from Redux store
-  const authState = useSelector(state => state.auth);
+  const authState = useSelector((state) => state.auth);
   const isAuthenticated = authState?.isAuthenticated || false;
   const user = authState?.user || null;
 
-  // Get data from Redux store with safe checks
+  // Get data from Redux store
   const orebiReducer = useSelector((state) => state.orebiReducer) || {};
   const products = orebiReducer.products || [];
-  
+
   // Get chat unread count
   const chatState = useSelector((state) => state.chat);
-  const chatNotifications = chatState?.conversations?.reduce((count, conv) => count + (conv.unreadCount || 0), 0) || 0;
-  
-  // Get cart information from Redux store
+  const chatNotifications =
+    chatState?.conversations?.reduce(
+      (count, conv) => count + (conv.unreadCount || 0),
+      0
+    ) || 0;
+
+  // Get cart information
   const cartState = useSelector((state) => state.cart) || {};
   const cartItems = cartState.items || [];
-  
-  // Calculate total items in cart
-  const cartTotalCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const cartTotalCount = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   const [showUser, setShowUser] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [userName, setUserName] = useState(null);
-  const [showSearch, setShowSearch] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('accessToken'));
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("accessToken")
+  );
+
   const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9999";
+
+  // Categories data
+  const categories = [
+    { id: 1, name: "Electronics", link: "/shop?category=electronics" },
+    { id: 2, name: "Fashion", link: "/shop?category=fashion" },
+    { id: 3, name: "Home & Garden", link: "/shop?category=home" },
+    { id: 4, name: "Sports", link: "/shop?category=sports" },
+    { id: 5, name: "Toys", link: "/shop?category=toys" },
+    { id: 6, name: "Motors", link: "/shop?category=motors" },
+    { id: 7, name: "Collectibles", link: "/shop?category=collectibles" },
+    { id: 8, name: "Health & Beauty", link: "/shop?category=beauty" },
+  ];
 
   // Fetch products function
   const fetchProducts = useCallback(async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/api/products`);
-      // Update to match backend model
-      const formattedProducts = response.data.data.map(product => ({
+      const formattedProducts = response.data.data.map((product) => ({
         ...product,
-        name: product.title, // Backend uses 'title' field for product names
-        image: product.image
+        name: product.title,
+        image: product.image,
       }));
-      
+
       dispatch(setProducts(formattedProducts));
       setAllProducts(formattedProducts);
     } catch (error) {
@@ -73,16 +100,16 @@ const HeaderBottom = () => {
   // Fetch user data function
   const fetchUserData = useCallback(async () => {
     try {
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem("accessToken");
       if (!token) {
         setIsLoggedIn(false);
         return;
       }
-      
+
       const response = await axios.get(`${API_BASE_URL}/api/profile`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       setUserName(response.data.fullname || response.data.username);
       dispatch(setUserInfo(response.data));
@@ -90,33 +117,32 @@ const HeaderBottom = () => {
     } catch (error) {
       console.error("Failed to fetch user profile:", error);
       if (error.response && error.response.status === 401) {
-        // Token expired or invalid
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem("accessToken");
         setIsLoggedIn(false);
       }
     }
   }, [API_BASE_URL, dispatch]);
 
-  // Effect to check login status whenever component renders
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
   }, []);
 
-  // Effect to load data when component mounts
   useEffect(() => {
     fetchProducts();
-    
+
     if (isLoggedIn) {
       fetchUserData();
     }
-  }, [isLoggedIn, fetchProducts, fetchUserData, dispatch]);
+  }, [isLoggedIn, fetchProducts, fetchUserData]);
 
-  // Handle clicks outside user menu
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
         setShowUser(false);
+      }
+      if (categoryRef.current && !categoryRef.current.contains(e.target)) {
+        setShowCategories(false);
       }
     };
 
@@ -124,13 +150,16 @@ const HeaderBottom = () => {
     return () => document.body.removeEventListener("click", handleClickOutside);
   }, []);
 
-  // Filter products when search query changes
   useEffect(() => {
     const filtered = allProducts
-      .filter((item) => 
-        (item.title && item.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (item.name && item.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      .filter(
+        (item) =>
+          (item.title &&
+            item.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (item.name &&
+            item.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (item.description &&
+            item.description.toLowerCase().includes(searchQuery.toLowerCase()))
       )
       .map((item) => ({
         _id: item._id,
@@ -139,9 +168,9 @@ const HeaderBottom = () => {
         price: item.price,
         description: item.description,
         category: item.categoryId?.name || "",
-        seller: item.sellerId?.username || ""
+        seller: item.sellerId?.username || "",
       }));
-    
+
     setFilteredProducts(filtered);
   }, [searchQuery, allProducts]);
 
@@ -151,25 +180,24 @@ const HeaderBottom = () => {
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem("accessToken");
       await axios.post(`${API_BASE_URL}/api/logout`, null, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
-      localStorage.removeItem('accessToken');
+
+      localStorage.removeItem("accessToken");
       dispatch(resetUserInfo());
       setIsLoggedIn(false);
       setUserName(null);
-      navigate('/signin');
+      navigate("/signin");
     } catch (error) {
       console.error("Logout failed:", error);
-      // Still clear the token on the client side even if the API call fails
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem("accessToken");
       setIsLoggedIn(false);
       setUserName(null);
-      navigate('/signin');
+      navigate("/signin");
     }
   };
 
@@ -177,8 +205,8 @@ const HeaderBottom = () => {
     if (!item.image) {
       return "https://via.placeholder.com/100?text=No+Image";
     }
-    
-    if (item.image.startsWith('http://') || item.image.startsWith('https://')) {
+
+    if (item.image.startsWith("http://") || item.image.startsWith("https://")) {
       return item.image;
     } else {
       return `${API_BASE_URL}/uploads/${item.image}`;
@@ -186,210 +214,387 @@ const HeaderBottom = () => {
   };
 
   return (
-    <div className="w-full bg-gradient-to-r from-[#1a237e] to-[#2962ff] relative shadow-xl">
-      <div className="max-w-container mx-auto">
-        <Flex className="flex flex-col lg:flex-row items-start lg:items-center justify-between w-full px-4 pb-4 lg:pb-0 h-full lg:h-20">
-          {/* Brand Name */}
-          <div className="flex h-14 items-center gap-2">
-            <Link to="/">
-              <div className="flex items-center">
-                <IoStorefrontOutline className="text-3xl text-white mr-2" />
-                <p className="text-[24px] font-bold text-white tracking-wider hover:text-gray-100 transition-colors">
-                  TUTHAITU
-                </p>
-              </div>
-            </Link>
-          </div>
-
-          {/* Search Bar */}
-          <div className="relative w-full lg:w-[600px] h-[50px] text-base bg-white flex items-center gap-2 justify-between px-6 rounded-xl overflow-hidden shadow-lg">
-            <input
-              className="flex-1 h-full outline-none placeholder:text-[#9e9e9e] placeholder:text-[14px]"
-              type="text"
-              onChange={handleSearch}
-              value={searchQuery}
-              placeholder="Search products..."
-            />
-            <FaSearch className="w-5 h-5 text-[#2962ff] cursor-pointer" />
-            
-            {searchQuery && filteredProducts.length > 0 && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="w-full mx-auto max-h-96 bg-white top-16 absolute left-0 z-50 overflow-y-auto shadow-2xl scrollbar-thin scrollbar-thumb-gray-300 cursor-pointer rounded-lg"
-              >
-                {filteredProducts.map((item) => (
-                  <div
-                    onClick={() => {
-                      navigate(`/product/${item._id}`, { state: { item } });
-                      setSearchQuery("");
-                    }}
-                    key={item._id}
-                    className="max-w-[600px] h-28 bg-gray-50 mb-2 flex items-center gap-3 p-3 hover:bg-blue-50 transition-colors border-b border-gray-100"
+    <div className="w-full bg-white sticky top-0 z-50 shadow-sm">
+      {/* TOP BAR - Giống eBay */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-[1280px] mx-auto px-4">
+          <div className="flex items-center justify-between py-2 text-xs">
+            {/* Left side */}
+            <div className="flex items-center gap-4">
+              {isAuthenticated ? (
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-600">Hi,</span>
+                  <button
+                    onClick={() => navigate("/profile")}
+                    className="text-blue-600 hover:underline font-semibold"
                   >
-                    <div className="w-24 h-24 bg-gray-100 rounded-md overflow-hidden">
-                      <img 
-                        className="w-full h-full object-contain p-1" 
-                        src={getProductImage(item)} 
-                        alt={item.name} 
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = "https://via.placeholder.com/100?text=No+Image";
-                        }}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1 flex-1">
-                      <p className="font-semibold text-lg truncate text-[#2962ff]">{item.name}</p>
-                      <p className="text-xs text-gray-600 line-clamp-2">
-                        {item.description || "No description available"}
-                      </p>
-                      <p className="text-sm font-medium">
-                        Price:{" "}
-                        <span className="text-[#2962ff] font-semibold">
-                          ${item.price?.toFixed(2) || "0.00"}
-                        </span>
-                      </p>
-                      {item.category && (
-                        <p className="text-xs text-gray-500">
-                          Category: {item.category}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            )}
-          </div>
+                    {userName || "User"}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-600">Hi!</span>
+                  <Link to="/signin" className="text-blue-600 hover:underline">
+                    Sign in
+                  </Link>
+                  <span className="text-gray-600">or</span>
+                  <Link to="/signup" className="text-blue-600 hover:underline">
+                    register
+                  </Link>
+                </div>
+              )}
 
-          {/* User Actions */}
-          <div className="flex gap-8 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
-            {/* Chat icon */}
-            {isAuthenticated && (
-              <Link to="/chat" className="text-white hover:text-gray-200 transition-colors">
-                <div className="flex flex-col items-center relative group">
-                  <div className="bg-white/10 rounded-full p-2 group-hover:bg-white/20 transition-all">
-                    <FiMessageSquare className="text-xl" />
-                  </div>
+              <Link
+                to="/deals"
+                className="text-gray-700 hover:text-blue-600 hover:underline"
+              >
+                Daily Deals
+              </Link>
+
+              <Link
+                to="/about"
+                className="text-gray-700 hover:text-blue-600 hover:underline hidden md:block"
+              >
+                Brand Outlet
+              </Link>
+
+              <Link
+                to="/contact"
+                className="text-gray-700 hover:text-blue-600 hover:underline hidden md:block"
+              >
+                Help & Contact
+              </Link>
+            </div>
+
+            {/* Right side */}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1 text-gray-700 hidden md:flex">
+                <span>Ship to</span>
+                <button className="flex items-center gap-1 hover:text-blue-600">
+                  <span className="font-semibold">Vietnam</span>
+                  <FaChevronDown className="text-xs" />
+                </button>
+              </div>
+
+              {isAuthenticated && user?.role === "buyer" && (
+                <Link
+                  to="/store-registration"
+                  className="text-gray-700 hover:text-blue-600 hover:underline"
+                >
+                  Sell
+                </Link>
+              )}
+
+              {isAuthenticated && user?.role === "seller" && (
+                <Link
+                  to="/overview"
+                  className="text-gray-700 hover:text-blue-600 hover:underline"
+                >
+                  Seller Hub
+                </Link>
+              )}
+
+              <Link
+                to="/watchlist"
+                className="text-gray-700 hover:text-blue-600 hover:underline hidden md:block"
+              >
+                Watchlist
+              </Link>
+
+              <Link
+                to="/order-history"
+                className="text-gray-700 hover:text-blue-600 hover:underline flex items-center gap-1"
+              >
+                <span>My eBay</span>
+                <FaChevronDown className="text-xs" />
+              </Link>
+
+              {/* Notifications */}
+              {isAuthenticated && (
+                <button className="relative text-gray-700 hover:text-blue-600">
+                  <FiBell className="text-base" />
                   {chatNotifications > 0 && (
-                    <span className="absolute -top-1 -right-1 text-xs w-5 h-5 flex items-center justify-center rounded-full bg-[#ff3d71] text-white font-bold">
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                       {chatNotifications}
                     </span>
                   )}
-                  <span className="text-xs mt-1 font-medium">Chat</span>
-                </div>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* MAIN HEADER - Logo + Search + Icons */}
+      <div className="bg-white w-full">
+        <div className="w-full px-10">
+          <div className="flex items-center justify-between py-4 w-full">
+            {/* LEFT: Logo + Shop by category */}
+            <div className="flex items-center gap-8 flex-shrink-0">
+              {/* Logo */}
+              <Link to="/" className="flex items-center">
+                <img
+                  src={logoImg}
+                  alt="Shop Logo"
+                  className="h-10 md:h-12 w-auto object-contain"
+                />
               </Link>
-            )}
-            
-            {/* User dropdown */}
-            <div 
-              ref={ref}
-              onClick={() => setShowUser(!showUser)} 
-              className="text-white hover:text-gray-200 transition-colors"
-            >
-              <div className="flex flex-col items-center group">
-                <div className="bg-white/10 rounded-full p-2 group-hover:bg-white/20 transition-all">
-                  <FiUser className="text-xl" />
-                </div>
-                <span className="text-xs mt-1 font-medium">Account</span>
-              </div>
-              
-              {showUser && (
-                <motion.div
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute top-16 right-0 z-50 bg-white w-64 text-[#262626] rounded-lg shadow-2xl p-4"
+
+              {/* Shop by category */}
+              <div ref={categoryRef} className="relative">
+                <button
+                  onClick={() => setShowCategories(!showCategories)}
+                  className="flex items-center gap-2 text-gray-700 hover:text-blue-600 font-medium text-sm"
                 >
-                  {isAuthenticated ? (
-                    // Logged in: Show account menu
-                    <>
-                      {userName && (
-                        <div className="text-[#2962ff] font-medium py-2 border-b border-gray-200 mb-2 flex items-center">
-                          <FiUser className="mr-2 text-lg" />
-                          Hello, {userName}
-                        </div>
-                      )}
-                      <Link to="/order-history" onClick={() => setShowUser(false)}>
-                        <div className="py-2 hover:bg-blue-50 px-3 rounded transition-colors flex items-center gap-3">
-                          <MdOutlineHistory className="text-[#2962ff] text-lg" />
-                          Order History
-                        </div>
-                      </Link>
-                      <Link to="/profile" onClick={() => setShowUser(false)}>
-                        <div className="py-2 hover:bg-blue-50 px-3 rounded transition-colors flex items-center gap-3">
-                          <RiUserSettingsLine className="text-[#2962ff] text-lg" />
-                          Profile
-                        </div>
-                      </Link>
-                      <Link to="/address" onClick={() => setShowUser(false)}>
-                        <div className="py-2 hover:bg-blue-50 px-3 rounded transition-colors flex items-center gap-3">
-                          <RiHomeSmileLine className="text-[#2962ff] text-lg" />
-                          Addresses
-                        </div>
-                      </Link>
-                      <Link to="/my-reviews" onClick={() => setShowUser(false)}>
-                        <div className="py-2 hover:bg-blue-50 px-3 rounded transition-colors flex items-center gap-3">
-                          <MdOutlineRateReview className="text-[#2962ff] text-lg" />
-                          Reviews
-                        </div>
-                      </Link>
-                      <Link to="/disputes" onClick={() => setShowUser(false)}>
-                        <div className="py-2 hover:bg-blue-50 px-3 rounded transition-colors flex items-center gap-3">
-                          <RiShieldLine className="text-[#2962ff] text-lg" />
-                          Disputes
-                        </div>
-                      </Link>
-                      <Link to="/return-requests" onClick={() => setShowUser(false)}>
-                        <div className="py-2 hover:bg-blue-50 px-3 rounded transition-colors flex items-center gap-3">
-                          <FaExchangeAlt className="text-[#2962ff] text-lg" />
-                          Return Requests
-                        </div>
-                      </Link>
-                      <div 
-                        onClick={handleLogout}
-                        className="py-2 mt-2 hover:bg-red-50 px-3 rounded transition-colors flex items-center gap-3 border-t border-gray-200 pt-3 text-red-600"
+                  <span>Shop by category</span>
+                  <FaChevronDown className="text-xs" />
+                </button>
+
+                {showCategories && (
+                  <motion.div
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-0 mt-2 w-60 bg-white border border-gray-200 rounded-lg shadow-xl z-50 py-2"
+                  >
+                    {categories.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        to={cat.link}
+                        onClick={() => setShowCategories(false)}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
                       >
-                        <FiLogOut className="text-lg" />
-                        Logout
+                        {cat.name}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </div>
+            </div>
+
+            {/* CENTER: Search (ăn hết phần còn lại) */}
+            <div className="flex-1 mx-16 max-w-[900px] relative">
+              <div className="flex border-2 border-gray-900 rounded-full overflow-hidden">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={handleSearch}
+                  placeholder="Search for anything"
+                  className="flex-1 px-4 py-2.5 text-sm outline-none"
+                />
+
+                <div className="border-l-2 border-gray-900" />
+
+                <button className="px-3 hover:bg-gray-50 flex items-center gap-2 text-sm">
+                  <span className="hidden md:inline text-gray-700">
+                    All Categories
+                  </span>
+                  <FaChevronDown className="text-xs text-gray-600" />
+                </button>
+
+                <button className="px-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold flex items-center gap-2">
+                  <FaSearch />
+                  <span className="hidden md:inline">Search</span>
+                </button>
+              </div>
+
+              {/* Search Results giữ nguyên */}
+              {searchQuery && filteredProducts.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute w-full mt-2 max-h-96 bg-white border border-gray-200 rounded-lg shadow-2xl overflow-y-auto z-50"
+                >
+                  {filteredProducts.map((item) => (
+                    <div
+                      key={item._id}
+                      onClick={() => {
+                        navigate(`/product/${item._id}`, { state: { item } });
+                        setSearchQuery("");
+                      }}
+                      className="flex items-center gap-3 p-3 hover:bg-blue-50 cursor-pointer border-b"
+                    >
+                      <img
+                        src={getProductImage(item)}
+                        className="w-14 h-14 object-contain"
+                        alt={item.name}
+                      />
+                      <div className="flex-1">
+                        <p className="font-semibold text-sm truncate">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-gray-600 truncate">
+                          {item.description}
+                        </p>
                       </div>
-                    </>
-                  ) : (
-                    // Not logged in: Show Sign In and Sign Up
-                    <>
-                      <Link to="/signin" onClick={() => setShowUser(false)}>
-                        <div className="py-3 bg-[#2962ff] hover:bg-[#1a237e] text-white px-3 rounded-lg transition-colors text-center font-medium">
-                          Sign In
-                        </div>
-                      </Link>
-                      <Link to="/signup" onClick={() => setShowUser(false)}>
-                        <div className="py-3 border border-[#2962ff] text-[#2962ff] hover:bg-blue-50 px-3 rounded-lg transition-colors mt-3 text-center font-medium">
-                          Sign Up
-                        </div>
-                      </Link>
-                    </>
-                  )}
+                    </div>
+                  ))}
                 </motion.div>
               )}
             </div>
-            
-            {/* Shopping Cart */}
-            <Link to="/cart" className="relative text-white hover:text-gray-200 transition-colors">
-              <div className="flex flex-col items-center group">
-                <div className="relative bg-white/10 rounded-full p-2 group-hover:bg-white/20 transition-all">
+
+            {/* Right Icons - Chat, Account, Cart */}
+            <div className="flex items-center gap-3">
+              {/* Chat */}
+              {isAuthenticated && (
+                <Link
+                  to="/chat"
+                  className="relative flex flex-col items-center hover:text-blue-600 transition-colors group"
+                >
+                  <FiMessageSquare className="text-xl" />
+                  {chatNotifications > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                      {chatNotifications}
+                    </span>
+                  )}
+                  <span className="text-xs mt-0.5">Messages</span>
+                </Link>
+              )}
+
+              {/* Account Dropdown */}
+              <div
+                ref={ref}
+                onClick={() => setShowUser(!showUser)}
+                className="relative cursor-pointer"
+              >
+                <div className="flex flex-col items-center hover:text-blue-600 transition-colors">
+                  <FiUser className="text-xl" />
+                  <span className="text-xs mt-0.5">Account</span>
+                </div>
+
+                {showUser && (
+                  <motion.div
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full right-0 mt-2 w-56 bg-white rounded-lg shadow-2xl border border-gray-200 py-2 z-50"
+                  >
+                    {isAuthenticated ? (
+                      <>
+                        {userName && (
+                          <div className="px-4 py-2 border-b border-gray-200 font-medium text-gray-900">
+                            Hi, {userName}
+                          </div>
+                        )}
+                        <Link
+                          to="/order-history"
+                          onClick={() => setShowUser(false)}
+                        >
+                          <div className="px-4 py-2 hover:bg-blue-50 flex items-center gap-3 text-sm text-gray-700">
+                            <MdOutlineHistory />
+                            Purchase History
+                          </div>
+                        </Link>
+                        <Link to="/profile" onClick={() => setShowUser(false)}>
+                          <div className="px-4 py-2 hover:bg-blue-50 flex items-center gap-3 text-sm text-gray-700">
+                            <RiUserSettingsLine />
+                            Account Settings
+                          </div>
+                        </Link>
+                        <Link to="/address" onClick={() => setShowUser(false)}>
+                          <div className="px-4 py-2 hover:bg-blue-50 flex items-center gap-3 text-sm text-gray-700">
+                            <RiHomeSmileLine />
+                            Addresses
+                          </div>
+                        </Link>
+                        <div className="border-t border-gray-200 my-1"></div>
+                        <div
+                          onClick={handleLogout}
+                          className="px-4 py-2 hover:bg-red-50 flex items-center gap-3 text-sm text-red-600 cursor-pointer"
+                        >
+                          <FiLogOut />
+                          Sign out
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <Link to="/signin" onClick={() => setShowUser(false)}>
+                          <div className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white text-center font-medium rounded mx-2 mb-2">
+                            Sign in
+                          </div>
+                        </Link>
+                        <div className="px-4 py-2 text-xs text-gray-600 text-center">
+                          New user?{" "}
+                          <Link
+                            to="/signup"
+                            className="text-blue-600 hover:underline"
+                          >
+                            Sign up
+                          </Link>
+                        </div>
+                      </>
+                    )}
+                  </motion.div>
+                )}
+              </div>
+
+              {/* Shopping Cart */}
+              <Link
+                to="/cart"
+                className="relative flex flex-col items-center hover:text-blue-600 transition-colors"
+              >
+                <div className="relative">
                   <FiShoppingBag className="text-xl" />
-                  {/* Cart items counter */}
                   {cartTotalCount > 0 && (
-                    <span className="absolute -top-1 -right-1 text-xs w-5 h-5 flex items-center justify-center rounded-full bg-[#ff3d71] text-white font-bold">
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                       {cartTotalCount}
                     </span>
                   )}
                 </div>
-                <span className="text-xs mt-1 font-medium">Cart</span>
-              </div>
-            </Link>
+                <span className="text-xs mt-0.5">Cart</span>
+              </Link>
+            </div>
           </div>
-        </Flex>
+        </div>
+      </div>
+
+      {/* BOTTOM NAVIGATION - Categories */}
+      <div className="bg-gray-50 border-t border-gray-200">
+        <div className="max-w-[1600px] mx-auto px-6">
+          <div className="flex items-center gap-6 py-2.5 text-sm overflow-x-auto">
+            {/* Shop by Category Dropdown */}
+            <div ref={categoryRef} className="relative">
+              <button
+                onClick={() => setShowCategories(!showCategories)}
+                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 font-medium whitespace-nowrap"
+              >
+                <span>Shop by category</span>
+                <FaChevronDown className="text-xs" />
+              </button>
+
+              {showCategories && (
+                <motion.div
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-0 mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-xl z-50 py-2"
+                >
+                  {categories.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      to={cat.link}
+                      onClick={() => setShowCategories(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </div>
+
+            {categories.slice(0, 6).map((cat) => (
+              <Link
+                key={cat.id}
+                to={cat.link}
+                className="text-gray-700 hover:text-blue-600 whitespace-nowrap"
+              >
+                {cat.name}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
