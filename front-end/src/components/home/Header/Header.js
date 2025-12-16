@@ -268,7 +268,7 @@ const Header = () => {
                 </motion.div>
               </div>
             )}
-          </div>
+          
         </Flex>
       </nav>
     </div>

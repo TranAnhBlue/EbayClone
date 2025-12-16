@@ -281,6 +281,34 @@ const AuthProductDetail = () => {
     }
   };
 
+  // Buy now (add to cart and go to checkout for this item)
+  const handleBuyNow = async () => {
+    if (!isAuthenticated) {
+      toast.info('Please sign in to buy products');
+      navigate('/signin');
+      return;
+    }
+
+    try {
+      setAddingToCart(true);
+      // Add one item to cart
+      await axios.post(
+        `${API_BASE_URL}/api/buyers/cart/add`,
+        { productId: product.product._id, quantity: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Proceed to checkout with this single item
+      const enriched = [{ productId: product.product, quantity: 1, shop: { _id: product.product.sellerId?._id, storeName: store?.storeName } }];
+      navigate('/checkout', { state: { selectedItems: enriched } });
+    } catch (error) {
+      console.error('Error in Buy Now:', error);
+      toast.error(error.response?.data?.message || 'Failed to process Buy Now');
+    } finally {
+      setAddingToCart(false);
+    }
+  };
+
   // Toggle favorite status
   const handleToggleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -455,7 +483,7 @@ const AuthProductDetail = () => {
         </Grid>
         
         {/* Product Info */}
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={4}>
           <Box>
             <Zoom in={true} style={{ transitionDelay: '300ms' }}>
               <Typography variant="h3" fontWeight={700} sx={{ mb: 2, color: '#333' }}>
@@ -571,6 +599,69 @@ const AuthProductDetail = () => {
                 {isFavorite ? <Favorite color="error" /> : <FavoriteBorder />}
               </IconButton>
             </Stack>
+          </Box>
+        </Grid>
+
+        {/* Buy Panel */}
+        <Grid item xs={12} md={3}>
+          <Box sx={{ position: 'sticky', top: 28 }}>
+            <InfoCard>
+              <CardContent>
+                <Typography variant="subtitle2" color="text.secondary">Price</Typography>
+                <PriceTag sx={{ display: 'block' }}>${productData.price?.toFixed(2)}</PriceTag>
+
+                <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                  <ActionButton
+                    variant="contained"
+                    size="large"
+                    onClick={handleBuyNow}
+                    sx={{ backgroundColor: '#ffd200', color: '#111', '&:hover': { backgroundColor: '#ffcf33' } }}
+                    disabled={addingToCart || inventory?.quantity <= 0}
+                  >
+                    Buy It Now
+                  </ActionButton>
+
+                  <ActionButton
+                    variant="contained"
+                    size="large"
+                    startIcon={<AddShoppingCart />}
+                    onClick={handleAddToCart}
+                    disabled={addingToCart || inventory?.quantity <= 0 || (user?.role === 'seller' && productData.sellerId?._id === user.id)}
+                    sx={{ backgroundColor: '#0F52BA' }}
+                  >
+                    Add to Cart
+                  </ActionButton>
+                </Box>
+
+                <Divider sx={{ my: 2 }} />
+
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <LocalShipping color="action" />
+                  <Box>
+                    <Typography variant="body2" fontWeight={600}>Free Shipping</Typography>
+                    <Typography variant="caption" color="text.secondary">Arrives in 3-5 business days</Typography>
+                  </Box>
+                </Box>
+
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
+                  <LocalOffer color="action" />
+                  <Box>
+                    <Typography variant="body2" fontWeight={600}>30-day returns</Typography>
+                    <Typography variant="caption" color="text.secondary">Seller pays return shipping</Typography>
+                  </Box>
+                </Box>
+
+                <Divider sx={{ my: 2 }} />
+
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Avatar src={productData.sellerId?.avatarURL} />
+                  <Box>
+                    <Typography variant="body2" fontWeight={700}>{store?.storeName || productData.sellerId?.username || 'Seller'}</Typography>
+                    <Typography variant="caption" color="text.secondary">Top-rated seller</Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </InfoCard>
           </Box>
         </Grid>
       </Grid>

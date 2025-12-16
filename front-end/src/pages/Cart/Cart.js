@@ -312,6 +312,10 @@ const Cart = () => {
                             Unit Price: ${item.productId?.price?.toFixed(2) || "0.00"}
                           </Typography>
 
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                            Seller: {item.shop?.storeName || item.productId?.storeName || item.productId?.sellerId}
+                          </Typography>
+
                           {item.productId.inventoryQuantity !== undefined && (
                             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                               Available: {item.productId.inventoryQuantity} in stock
@@ -453,15 +457,20 @@ const Cart = () => {
                   disabled={selectedItems.length === 0}
                   sx={{
                     py: 1.5,
-                    backgroundColor: '#0F52BA',
+                    backgroundColor: '#ffd200',
+                    color: '#111',
                     '&:hover': {
-                      backgroundColor: '#0A3C8A',
+                      backgroundColor: '#ffcf33',
                     },
-                    fontWeight: 600
+                    fontWeight: 700
                   }}
                 >
                   Proceed to Checkout
                 </Button>
+
+                <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1, textAlign: 'center' }}>
+                  Free standard shipping on orders over $50
+                </Typography>
 
                 <Box sx={{ mt: 3, textAlign: 'center' }}>
                   <Link to="/" style={{ textDecoration: 'none' }}>
