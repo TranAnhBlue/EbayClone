@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
 const {
   getProvinces,
   getDistricts,
@@ -100,9 +101,8 @@ router.post('/calc-fee-simple', async (req, res) => {
     // Lấy tỷ giá động từ API nội bộ
     let usdRate = 1;
     try {
-      const fetch = require('node-fetch');
-      const rateRes = await fetch('http://localhost:9999/api/ghn/exchange-rate');
-      const rateData = await rateRes.json();
+      const rateRes = await axios.get('http://localhost:9999/api/ghn/exchange-rate');
+      const rateData = rateRes.data;
       if (rateData && rateData.success && rateData.rate) {
         usdRate = rateData.rate;
       }
@@ -136,13 +136,12 @@ router.post('/calc-fee-simple', async (req, res) => {
     res.status(500).json({ error: err.response ? err.response.data : err.message });
   }
 });
-const fetch = require('node-fetch');
 router.get('/exchange-rate', async (req, res) => {
   try {
     // Sử dụng API miễn phí, có thể thay bằng API khác nếu cần
     const apiUrl = 'https://open.er-api.com/v6/latest/USD';
-    const response = await fetch(apiUrl);
-    const data = await response.json();
+    const response = await axios.get(apiUrl);
+    const data = response.data;
     if (data && data.rates && data.rates.VND) {
       res.json({
         success: true,

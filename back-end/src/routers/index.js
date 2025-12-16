@@ -19,6 +19,15 @@ router.use("/seller", sellerRouter);
 router.use('/ghn', ghnRoutes);
 router.use('/shipping', shippingRoutes);
 
+// Health check endpoint for Docker/load balancer
+router.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    service: 'ebayclone-backend'
+  });
+});
+
 // Routes cho đăng ký và đăng nhập
 router.post("/register", authController.register);
 router.post("/login", authController.login);
