@@ -44,7 +44,6 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filtering, setFiltering] = useState(false);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [addingToCart, setAddingToCart] = useState({});
   const [sortOrder, setSortOrder] = useState('default');
@@ -96,7 +95,7 @@ const Home = () => {
   // Get products, can filter by category
   const fetchProducts = async () => {
     try {
-      setFiltering(true);
+      setLoading(true);
       let url = `${API_BASE_URL}/api/products`;
       
       if (selectedCategories.length > 0) {
@@ -146,40 +145,24 @@ const Home = () => {
 
   // When selected categories change, filter products again
   useEffect(() => {
-  const load = async () => {
-    await fetchProducts();
-
-    // Restore scroll position
-    window.scrollTo({
-      top: scrollPositionRef.current,
-      behavior: 'auto'
-    });
-  };
-
-  load();
-}, [selectedCategories]);
-
+    fetchProducts();
+  }, [selectedCategories]);
 
   const handleImageError = (e) => {
     e.target.onerror = null;
     e.target.src = 'https://via.placeholder.com/300?text=No+Image';
   };
 
-  const scrollPositionRef = React.useRef(0);
-
   // Handle when selecting/deselecting categories
   const handleCategoryChange = (categoryId) => {
-  scrollPositionRef.current = window.scrollY;
-
-  setSelectedCategories(prev => {
-    if (prev.includes(categoryId)) {
-      return prev.filter(id => id !== categoryId);
-    } else {
-      return [...prev, categoryId];
-    }
-  });
-};
-
+    setSelectedCategories(prev => {
+      if (prev.includes(categoryId)) {
+        return prev.filter(id => id !== categoryId);
+      } else {
+        return [...prev, categoryId];
+      }
+    });
+  };
 
   // Add product to cart
   const handleAddToCart = async (productId) => {
@@ -219,37 +202,6 @@ const Home = () => {
       setAddingToCart(prev => ({ ...prev, [productId]: false }));
     }
   };
-
-  const categoryImages = {
-  laptop: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
-  laptops: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
-
-  smartphone: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9',
-  smartphones: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9',
-
-  tablet: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04',
-  tablets: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04',
-
-  camera: 'https://images.unsplash.com/photo-1519183071298-a2962be96c0b',
-
-  headphone: 'https://images.unsplash.com/photo-1518445692043-5484f1b6b3a9',
-  headphones: 'https://images.unsplash.com/photo-1518445692043-5484f1b6b3a9',
-
-  gaming: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db',
-
-  watch: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
-  watches: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
-
-  default: 'https://images.unsplash.com/photo-1498049794561-7780e7231661'
-};
-
-const normalizeCategory = (name = '') =>
-  name
-    .toLowerCase()
-    .replace(/&/g, 'and')
-    .replace(/\s+/g, '')
-    .replace(/[^a-z]/g, '');
-
 
   // Toggle favorite product
   const handleToggleFavorite = (productId) => {
@@ -365,159 +317,48 @@ const normalizeCategory = (name = '') =>
   const sortedProducts = getSortedProducts();
 
   return (
-  <Container maxWidth="lg" sx={{ py: 5 }}>
-
-    {/* ================= EBAY HERO (FAKE) ================= */}
-<Paper
-  elevation={0}
-  sx={{
-    mb: 6,
-    p: { xs: 3, md: 5 },
-    borderRadius: 4,
-    background: 'linear-gradient(90deg, #f7f7f7 0%, #ffffff 100%)',
-    display: 'flex',
-    flexDirection: { xs: 'column', md: 'row' },
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  }}
->
-  <Box>
-    <Typography
-      variant="h4"
-      sx={{ fontWeight: 700, mb: 1 }}
-    >
-      Explore deals you’ll love
-    </Typography>
-    <Typography color="text.secondary" sx={{ mb: 3 }}>
-      Discover top products, trending items and exclusive offers
-    </Typography>
-    <Button
-      variant="contained"
-      sx={{
-        backgroundColor: '#3665f3',
-        textTransform: 'none',
-        px: 4,
-        '&:hover': { backgroundColor: '#2b4fd8' }
-      }}
-    >
-      Shop now
-    </Button>
-  </Box>
-
-  <Box
-    component="img"
-    src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=900&auto=format&fit=crop"
-    alt="Shopping deals"
-    sx={{
-      mt: { xs: 3, md: 0 },
-      width: { xs: '100%', md: 420 },
-      height: 260,
-      objectFit: 'cover',
-      borderRadius: 3,
-      boxShadow: 3
-    }}
-  />
-</Paper>
-
-
-{/* ================= CATEGORIES STRIP ================= */}
-<Box sx={{ mb: 6 }}>
-  <Typography
-    variant="h5"
-    fontWeight={700}
-    sx={{ mb: 3 }}
-  >
-    The future in your hands
-  </Typography>
-
-  <Grid container spacing={3}>
-    {categories.map((category, index) => {
-  const key = normalizeCategory(category.name);
-  const image = categoryImages[key] || categoryImages.default;
-
-  return (
-    <Grid item xs={4} sm={3} md={2} key={category._id}>
-      <Box
-        onClick={() => handleCategoryChange(category._id)}
-        sx={{ textAlign: 'center', cursor: 'pointer' }}
+    <Container maxWidth="lg" sx={{ py: 5 }}>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        <Box
-          sx={{
-            width: 120,
-            height: 120,
-            mx: 'auto',
-            borderRadius: '50%',
-            overflow: 'hidden',
-            border: selectedCategories.includes(category._id)
-              ? '3px solid #3665f3'
-              : '3px solid transparent'
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            mb: 5,
+            borderBottom: '2px solid #e0e0e0',
+            pb: 3
           }}
         >
-          <Box
-            component="img"
-            src={`${image}?w=300&h=300&fit=crop`}
-            alt={category.name}
-            sx={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover'
-            }}
-          />
-        </Box>
-
-        <Typography sx={{ mt: 1.5, fontWeight: 600 }}>
-          {category.name}
-        </Typography>
-      </Box>
-    </Grid>
-  );
-})}
-  </Grid>
-</Box>
-
-
-
-    {/* ================= SECTION TITLE ================= */}
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 5,
-          borderBottom: '2px solid #e0e0e0',
-          pb: 3
-        }}
-      >
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: 700,
-            background: 'linear-gradient(45deg, #0F52BA, #5E91F5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            position: 'relative',
-            '&:after': {
-              content: '""',
-              position: 'absolute',
-              bottom: -12,
-              left: 0,
-              width: '80px',
-              height: '5px',
+          <Typography 
+            variant="h4" 
+            sx={{ 
+              fontWeight: 700, 
               background: 'linear-gradient(45deg, #0F52BA, #5E91F5)',
-              borderRadius: '10px'
-            }
-          }}
-        >
-          Discover Products
-        </Typography>
-      </Box>
-    </motion.div>
-
+              backgroundClip: 'text',
+              textFillColor: 'transparent',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              position: 'relative',
+              '&:after': {
+                content: '""',
+                position: 'absolute',
+                bottom: -12,
+                left: 0,
+                width: '80px',
+                height: '5px',
+                background: 'linear-gradient(45deg, #0F52BA, #5E91F5)',
+                borderRadius: '10px'
+              }
+            }}
+          >
+            Discover Products
+          </Typography>
+        </Box>
+      </motion.div>
       
       <Grid container spacing={4}>
         <Grid item xs={12} md={3}>

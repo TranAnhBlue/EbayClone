@@ -34,6 +34,7 @@ const HeaderBottom = () => {
   // Get authentication info from Redux store
   const authState = useSelector((state) => state.auth);
   const isAuthenticated = authState?.isAuthenticated || false;
+  const user = authState?.user || null;
 
   // Get data from Redux store
   const orebiReducer = useSelector((state) => state.orebiReducer) || {};
@@ -55,7 +56,6 @@ const HeaderBottom = () => {
     0
   );
 
-  /* ================= LOCAL STATE ================= */
   const [showUser, setShowUser] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
@@ -97,7 +97,7 @@ const HeaderBottom = () => {
     }
   }, [API_BASE_URL, dispatch]);
 
-  /* ================= FETCH USER ================= */
+  // Fetch user data function
   const fetchUserData = useCallback(async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -111,8 +111,8 @@ const HeaderBottom = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setUserName(res.data.fullname || res.data.username);
-      dispatch(setUserInfo(res.data));
+      setUserName(response.data.fullname || response.data.username);
+      dispatch(setUserInfo(response.data));
       setIsLoggedIn(true);
     } catch (error) {
       console.error("Failed to fetch user profile:", error);
@@ -137,7 +137,7 @@ const HeaderBottom = () => {
   }, [isLoggedIn, fetchProducts, fetchUserData]);
 
   useEffect(() => {
-    const handleClick = (e) => {
+    const handleClickOutside = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
         setShowUser(false);
       }
@@ -145,8 +145,9 @@ const HeaderBottom = () => {
         setShowCategories(false);
       }
     };
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+
+    document.body.addEventListener("click", handleClickOutside);
+    return () => document.body.removeEventListener("click", handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -172,6 +173,10 @@ const HeaderBottom = () => {
 
     setFilteredProducts(filtered);
   }, [searchQuery, allProducts]);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   const handleLogout = async () => {
     try {
