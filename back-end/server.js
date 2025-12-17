@@ -78,7 +78,8 @@ const io = initSocketServer(server);
 app.set('io', io);
 
 // Listen on server (not app)
-server.listen(PORT, () => {
+// Use '0.0.0.0' to listen on all interfaces (required for Docker)
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running at PORT ${PORT}`);
   console.log(`WebSocket server is running`);
   

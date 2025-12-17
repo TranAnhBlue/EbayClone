@@ -1,10 +1,12 @@
 const express = require('express');
 const { authMiddleware } = require('../middleware/auth.middleware');
+const { generalRateLimiter } = require('../middleware/rateLimit.middleware');
 const chatController = require('../controllers/chatController');
 
 const chatRouter = express.Router();
 
-// Apply authentication middleware to all chat routes
+// Apply rate limit and authentication middleware to all chat routes
+chatRouter.use(generalRateLimiter);
 chatRouter.use(authMiddleware);
 
 // Get all conversations for the current user

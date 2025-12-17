@@ -8,6 +8,9 @@ const {
   isAdmin,
 } = require("../middleware/auth.middleware");
 
+// Import rate limit middleware
+const { generalRateLimiter, strictRateLimiter } = require("../middleware/rateLimit.middleware");
+
 // Import các controller functions từ adminController
 const {
   // User Management
@@ -73,6 +76,7 @@ const {
 } = require('../controllers/voucherController');
 
 // Áp dụng middleware xác thực và phân quyền admin cho tất cả các route trong file này
+router.use(generalRateLimiter);
 router.use(authMiddleware);
 router.use(authorizeRoles("admin"));
 
@@ -80,12 +84,12 @@ router.use(authorizeRoles("admin"));
 router.get("/users", getAllUsers);
 router.get("/users/:userId", getUserDetails);
 router.put("/users/:userId", updateUserByAdmin);
-router.delete("/users/:userId", deleteUserByAdmin); // Corrected path to /admin/users/:userId
+router.delete("/users/:userId", strictRateLimiter, deleteUserByAdmin); // Corrected path to /admin/users/:userId
 // --- Store Management Routes ---
 router.get("/stores", getAllStoresAdmin);
 router.get("/stores/:storeId", getStoreDetails);
 router.put("/stores/:storeId", updateStoreByAdmin);
-router.put("/stores/:storeId/status", updateStoreStatusByAdmin);
+router.put("/stores/:storeId/status", strictRateLimiter, updateStoreStatusByAdmin);
 
 // // --- Category Management Routes ---
 // router.post("/categories", createCategoryAdmin);
@@ -100,8 +104,8 @@ router.put("/stores/:storeId/status", updateStoreStatusByAdmin);
 // --- Product Management by Admin Routes ---
 router.get("/products", getAllProductsAdmin); // danh sách
 router.get("/products/:id", getProductDetailsAdmin); // chi tiết sản phẩm
-router.put("/products/:id/status", updateProductStatusAdmin); // cập nhật trạng thái
-router.delete("/products/:id", deleteProductAdmin); // xoá sản phẩm
+router.put("/products/:id/status", strictRateLimiter, updateProductStatusAdmin); // cập nhật trạng thái
+router.delete("/products/:id", strictRateLimiter, deleteProductAdmin); // xoá sản phẩm
 router.get("/products/stats", getProductStatsAdmin); // thống kê sản phẩm
 router.get("/products/:id/reviews", getProductReviewsAndStats);
 
@@ -112,17 +116,17 @@ router.get("/products/:id/reviews", getProductReviewsAndStats);
 
 // --- Review and Feedback Moderation Routes ---
 router.get("/reviews", getAllReviewsAdmin); // danh sách đánh giá
-router.delete("/reviews/:id", deleteReviewAdmin); // xoá đánh giá theo ID
+router.delete("/reviews/:id", strictRateLimiter, deleteReviewAdmin); // xoá đánh giá theo ID
 
 // --- Admin Dashboard Routes ---
 router.get("/report", getAdminReport);
 
 // Voucher Management Routes
-router.post('/vouchers', createVoucher);
+router.post('/vouchers', strictRateLimiter, createVoucher);
 router.get('/vouchers', getVouchers);
 router.get('/vouchers/:id', getVoucherById);
-router.put('/vouchers/:id', updateVoucher);
-router.delete('/vouchers/:id', deleteVoucher);
-router.put('/vouchers/:id/toggle-active', toggleVoucherActive);
+router.put('/vouchers/:id', strictRateLimiter, updateVoucher);
+router.delete('/vouchers/:id', strictRateLimiter, deleteVoucher);
+router.put('/vouchers/:id/toggle-active', strictRateLimiter, toggleVoucherActive);
 
 module.exports = router;
