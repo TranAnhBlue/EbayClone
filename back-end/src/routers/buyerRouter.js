@@ -12,6 +12,7 @@ const reviewController = require('../controllers/reviewController');
 const disputeController = require('../controllers/disputeController');
 const userController = require('../controllers/userController');
 const returnRequestController = require('../controllers/returnRequestController');
+const chatbotController = require('../controllers/chatbotController');
 
 const buyerRouter = express.Router();
 
@@ -64,6 +65,14 @@ paymentRoutes.use(isBuyer);
 paymentRoutes.post('/', veryStrictRateLimiter, paymentController.createPayment);
 paymentRoutes.get('/status/:orderId', paymentController.checkPaymentStatus);
 buyerRouter.use('/payments', paymentRoutes);
+
+// Chatbot tư vấn đơn hàng
+const chatbotRoutes = express.Router();
+chatbotRoutes.use(isBuyer);
+chatbotRoutes.post('/chat', strictRateLimiter, chatbotController.handleChat);
+chatbotRoutes.get('/chat', strictRateLimiter, chatbotController.handleChat);
+chatbotRoutes.get('/history', chatbotController.getChatHistory);
+buyerRouter.use('/chatbot', chatbotRoutes);
 
 // ... (các route còn lại giữ nguyên, không cần thay đổi)
 // Review routes
