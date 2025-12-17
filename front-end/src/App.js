@@ -55,6 +55,7 @@ import MyDisputes from './pages/Disputes/MyDisputes';
 import CreateDisputeForm from './pages/Disputes/CreateDisputeForm';
 import Profile from './pages/Profile/Profile'; // Import the Profile component
 import ReturnRequestsList from './pages/ReturnRequests/ReturnRequestsList';
+import ChatbotWidget from './components/Chatbot/ChatbotWidget';
 
 import ManageUser from "./pages/DashboardAdmin/ManageUser/ManageUser";
 import ManageStore from "./pages/DashboardAdmin/ManageShop/ManageStore";
@@ -67,6 +68,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const Layout = () => {
+  // Kiểm tra user đã đăng nhập hay chưa
+  const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
+  const isAuthenticated = !!token;
+
   return (
     <div>
       <ToastContainer
@@ -88,6 +93,8 @@ const Layout = () => {
       <Outlet />
       <Footer />
       <FooterBottom />
+      {/* Chatbot Widget - chỉ hiển thị khi user đã đăng nhập */}
+      {isAuthenticated && <ChatbotWidget />}
     </div>
   );
 };
