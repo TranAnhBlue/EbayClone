@@ -82,7 +82,7 @@ const Layout = () => {
         theme="colored"
       />
       <Header />
-      <HeaderBottom />
+      {/* <HeaderBottom /> */}
       {/* <SpecialCase /> */}
       <ScrollRestoration />
       <Outlet />

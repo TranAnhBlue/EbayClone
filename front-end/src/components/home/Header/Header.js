@@ -1,297 +1,688 @@
-import React, { useEffect, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { MdClose } from "react-icons/md";
-import { HiMenuAlt2 } from "react-icons/hi";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { logo, logoLight } from "../../../assets/images";
-import Image from "../../designLayouts/Image";
-import { navBarList } from "../../../constants";
-import Flex from "../../designLayouts/Flex";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../features/auth/authSlice";
+import { FaSearch, FaChevronDown } from "react-icons/fa";
+import {
+  FiUser,
+  FiShoppingBag,
+  FiMessageSquare,
+  FiLogOut,
+  FiBell,
+} from "react-icons/fi";
+import { IoStorefrontOutline } from "react-icons/io5";
+import {
+  MdOutlineHistory,
+  MdOutlineRateReview,
+  MdFavoriteBorder,
+} from "react-icons/md";
+import { RiUserSettingsLine, RiHomeSmileLine } from "react-icons/ri";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import logoImg from "../../../assets/images/shopiiLogo.png";
+import {
+  resetUserInfo,
+  setUserInfo,
+  setProducts,
+} from "../../../redux/orebiSlice";
 
 const Header = () => {
-  const [showMenu, setShowMenu] = useState(true);
-  const [sidenav, setSidenav] = useState(false);
-  const [category, setCategory] = useState(false);
-  const [brand, setBrand] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const ref = useRef();
+  const categoryRef = useRef();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slideIntervalRef = useRef(null);
+  const banners = [
+    {
+      title: "Snap. Work. Play.",
+      desc: "Find the electronics that fit your lifestyle.",
+      bg: "bg-blue-600",
+    },
+    {
+      title: "Tech for Everyday Life",
+      desc: "Upgrade your home and office today.",
+      bg: "bg-indigo-600",
+    },
+    {
+      title: "Entertainment Starts Here",
+      desc: "Audio, video & gaming deals.",
+      bg: "bg-purple-600",
+    },
+  ];
+  const bannerCategories = [
+    [
+      {
+        name: "Electronics",
+        image:
+          "https://m.media-amazon.com/images/I/61Hg040ZMuL._AC_SL1000_.jpg",
+        link: "/shop?category=electronics",
+      },
+      {
+        name: "Motors",
+        image:
+          "https://engineeringlearn.com/wp-content/uploads/2021/03/Types-of-Motors-And-their-use.jpg",
+        link: "/shop?category=motors",
+      },
+    ],
+    [
+      {
+        name: "Fashion",
+        image:
+          "https://snworksceo.imgix.net/tdg/636ccc86-b862-4883-a6e9-76a27e8cd775.sized-1000x1000.jpg?w=800",
+        link: "/shop?category=fashion",
+      },
+      {
+        name: "Health & Beauty",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcQfsHssWFh-HM61OsHeuob7SWzPWw3R_lGQ&s",
+        link: "/shop?category=beauty",
+      },
+    ],
+    [
+      {
+        name: "Sports",
+        image:
+          "https://i.etsystatic.com/25460158/r/il/41f3b0/3696258950/il_fullxfull.3696258950_9403.jpg",
+        link: "/shop?category=sports",
+      },
+      {
+        name: "Toys",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwnlEXSAeog0oKHISZROAb45BIdDaFSAlAZA&s",
+        link: "/shop?category=toys",
+      },
+    ],
+  ];
+  const futureCategories = [
+  { name: "Laptops", img: "https://shopcongnghe.com.vn/wp-content/uploads/1-8.jpg", link: "/shop?category=laptops" },
+  { name: "Smartphones", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4sebu-tvh1qVtlmapfT5RZRCgSbQu3GlE1w&s", link: "/shop?category=phones" },
+  { name: "Tablets", img: "https://i5.walmartimages.com.mx/samsmx/images/product-images/img_large/981040427l.jpg?odnHeight=612&odnWidth=612&odnBg=FFFFFF", link: "/shop?category=tablets" },
+];
+
+const trendingCategories = [
+  { name: "Tech", img: "https://www.ucf.edu/wp-content/blogs.dir/20/files/2023/07/Tech-Hub.jpg", link: "/shop?category=electronics" },
+  { name: "Motors", img: "https://dolinmachine.com/assets/news/2017_02/electromagnetic-brakes.jpg", link: "/shop?category=motors" },
+  { name: "Luxury", img: "https://news.dupontregistry.com/wp-content/uploads/2023/07/rr-main-scaled.jpg", link: "/shop?category=luxury" },
+];
+
   
-  // Get user info from Redux store
-  const { user, isAuthenticated } = useSelector(state => state.auth);
-  
-  // Handle responsive menu
   useEffect(() => {
-    let ResponsiveMenu = () => {
-      if (window.innerWidth < 667) {
-        setShowMenu(false);
-      } else {
-        setShowMenu(true);
-      }
-    };
-    ResponsiveMenu();
-    window.addEventListener("resize", ResponsiveMenu);
-    
-    // Add scroll event listener
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    
-    // Cleanup event listeners
-    return () => {
-      window.removeEventListener("resize", ResponsiveMenu);
-      window.removeEventListener('scroll', handleScroll);
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % banners.length);
+    }, 4000);
+
+    return () => clearInterval(timer);
+  }, [banners.length]);
+
+  // Get authentication info from Redux store
+  const authState = useSelector((state) => state.auth);
+  const isAuthenticated = authState?.isAuthenticated || false;
+  const user = authState?.user || null;
+
+  // Get data from Redux store
+  const orebiReducer = useSelector((state) => state.orebiReducer) || {};
+  const products = orebiReducer.products || [];
+
+  // Get chat unread count
+  const chatState = useSelector((state) => state.chat);
+  const chatNotifications =
+    chatState?.conversations?.reduce(
+      (count, conv) => count + (conv.unreadCount || 0),
+      0
+    ) || 0;
+
+  // Get cart information
+  const cartState = useSelector((state) => state.cart) || {};
+  const cartItems = cartState.items || [];
+  const cartTotalCount = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
+  const [showUser, setShowUser] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
+  const [allProducts, setAllProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [userName, setUserName] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("accessToken")
+  );
+
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9999";
+
+  // Categories data
+  const categories = [
+    { id: 1, name: "Electronics", link: "/shop?category=electronics" },
+    { id: 2, name: "Fashion", link: "/shop?category=fashion" },
+    { id: 3, name: "Home & Garden", link: "/shop?category=home" },
+    { id: 4, name: "Sports", link: "/shop?category=sports" },
+    { id: 5, name: "Toys", link: "/shop?category=toys" },
+    { id: 6, name: "Motors", link: "/shop?category=motors" },
+    { id: 7, name: "Collectibles", link: "/shop?category=collectibles" },
+    { id: 8, name: "Health & Beauty", link: "/shop?category=beauty" },
+  ];
+
+  // Fetch products function
+  const fetchProducts = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/products`);
+      const formattedProducts = response.data.data.map((product) => ({
+        ...product,
+        name: product.title,
+        image: product.image,
+      }));
+
+      dispatch(setProducts(formattedProducts));
+      setAllProducts(formattedProducts);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
     }
+  }, [API_BASE_URL, dispatch]);
+
+  // Fetch user data function
+  const fetchUserData = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        setIsLoggedIn(false);
+        return;
+      }
+
+      const response = await axios.get(`${API_BASE_URL}/api/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUserName(response.data.fullname || response.data.username);
+      dispatch(setUserInfo(response.data));
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem("accessToken");
+        setIsLoggedIn(false);
+      }
+    }
+  }, [API_BASE_URL, dispatch]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
   }, []);
 
-  // Handle logout
-  const handleLogout = () => {
-    dispatch(logout());
-    setSidenav(false);
-    navigate('/signin');
+  useEffect(() => {
+    fetchProducts();
+
+    if (isLoggedIn) {
+      fetchUserData();
+    }
+  }, [isLoggedIn, fetchProducts, fetchUserData]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setShowUser(false);
+      }
+      if (categoryRef.current && !categoryRef.current.contains(e.target)) {
+        setShowCategories(false);
+      }
+    };
+
+    document.body.addEventListener("click", handleClickOutside);
+    return () => document.body.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const filtered = allProducts
+      .filter(
+        (item) =>
+          (item.title &&
+            item.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (item.name &&
+            item.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (item.description &&
+            item.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+      .map((item) => ({
+        _id: item._id,
+        image: item.image,
+        name: item.name || item.title || "Untitled Product",
+        price: item.price,
+        description: item.description,
+        category: item.categoryId?.name || "",
+        seller: item.sellerId?.username || "",
+      }));
+
+    setFilteredProducts(filtered);
+  }, [searchQuery, allProducts]);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
   };
 
-  // Navigate to store registration
-  const handleBecomeASeller = () => {
-    navigate('/store-registration');
-    setSidenav(false);
-  };
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      await axios.post(`${API_BASE_URL}/api/logout`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  // Handle navigation based on user role
-  const handleNavigation = (link, title) => {
-    // If user is a seller and they click on Shop, redirect to /overview
-    if (isAuthenticated && user.role === 'seller' && title === 'Shop') {
-      navigate('/overview');
-      setSidenav(false);
-    } else {
-      navigate(link);
-      setSidenav(false);
+      localStorage.removeItem("accessToken");
+      dispatch(resetUserInfo());
+      setIsLoggedIn(false);
+      setUserName(null);
+      navigate("/signin");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      localStorage.removeItem("accessToken");
+      setIsLoggedIn(false);
+      setUserName(null);
+      navigate("/signin");
     }
   };
 
-  // return (
-  //   <div className={`w-full h-20 sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md' : 'bg-white'} border-b-[1px] border-b-gray-200`}>
-  //     <nav className="h-full px-4 max-w-container mx-auto relative">
-  //       <Flex className="flex items-center justify-between h-full">
-  //         <Link to="/">
-  //           <div className="transform hover:scale-105 transition-transform duration-300">
-  //             <Image className="w-32 object-cover" imgSrc={logo} />
-  //           </div>
-  //         </Link>
-  //         <div>
-  //           {showMenu && (
-  //             <motion.ul
-  //               initial={{ y: 30, opacity: 0 }}
-  //               animate={{ y: 0, opacity: 1 }}
-  //               transition={{ duration: 0.5 }}
-  //               className="flex items-center w-auto z-50 p-0 gap-2"
-  //             >
-  //               <>
-  //                 {navBarList.map(({ _id, title, link }) => (
-  //                   <NavLink
-  //                     key={_id}
-  //                     className={({ isActive }) => 
-  //                       `flex font-normal hover:font-bold w-20 h-6 justify-center items-center px-12 text-base ${isActive ? 'text-[#0F52BA] font-bold' : 'text-[#767676]'} hover:text-[#0F52BA] hover:underline underline-offset-[4px] decoration-[1px] md:border-r-[2px] border-r-gray-300 hoverEffect last:border-r-0 transition-colors`}
-  //                     onClick={(e) => {
-  //                       if (isAuthenticated && user.role === 'seller' && title === 'Shop') {
-  //                         e.preventDefault();
-  //                         navigate('/overview');
-  //                       }
-  //                     }}
-  //                     to={link}
-  //                     state={{ data: location.pathname.split("/")[1] }}
-  //                   >
-  //                     <li>{title}</li>
-  //                   </NavLink>
-  //                 ))}
-                  
-  //                 {/* User info display */}
-  //                 {isAuthenticated ? (
-  //                   <div className="flex items-center ml-4 space-x-4">
-  //                     <span className="text-[#262626] font-medium">
-  //                       Hello, {user.username}
-  //                     </span>
-  //                     {/* Show "Become a Seller" button only for buyers */}
-  //                     {user.role === 'buyer' && (
-  //                       <button 
-  //                         onClick={handleBecomeASeller}
-  //                         className="border border-[#0F52BA] text-[#0F52BA] px-4 py-1 rounded hover:bg-[#0F52BA] hover:text-white transition-colors duration-300"
-  //                       >
-  //                         Become a Seller
-  //                       </button>
-  //                     )}
-  //                     <button 
-  //                       onClick={handleLogout}
-  //                       className="bg-[#0F52BA] text-white px-4 py-1 rounded hover:bg-[#0A3C8A] transition-colors duration-300 shadow-md hover:shadow-lg"
-  //                     >
-  //                       Logout
-  //                     </button>
-  //                   </div>
-  //                 ) : (
-  //                   <div className="flex items-center ml-4 space-x-4">
-  //                     <Link to="/signin">
-  //                       <button className="bg-[#0F52BA] text-white px-4 py-1 rounded hover:bg-[#0A3C8A] transition-colors duration-300 shadow-md hover:shadow-lg">
-  //                         Sign In
-  //                       </button>
-  //                     </Link>
-  //                     <Link to="/signup">
-  //                       <button className="border border-[#0F52BA] text-[#0F52BA] px-4 py-1 rounded hover:bg-[#0F52BA] hover:text-white transition-colors duration-300">
-  //                         Sign Up
-  //                       </button>
-  //                     </Link>
-  //                   </div>
-  //                 )}
-  //               </>
-  //             </motion.ul>
-  //           )}
-  //           <HiMenuAlt2
-  //             onClick={() => setSidenav(!sidenav)}
-  //             className="inline-block md:hidden cursor-pointer w-8 h-6 absolute top-6 right-4 text-[#0F52BA]"
-  //           />
-  //           {sidenav && (
-  //             <div className="fixed top-0 left-0 w-full h-screen bg-black text-gray-200 bg-opacity-80 z-50">
-  //               <motion.div
-  //                 initial={{ x: -300, opacity: 0 }}
-  //                 animate={{ x: 0, opacity: 1 }}
-  //                 transition={{ duration: 0.5 }}
-  //                 className="w-[80%] h-full relative"
-  //               >
-  //                 <div className="w-full h-full bg-[#0F52BA] p-6">
-  //                   <img
-  //                     className="w-28 mb-6"
-  //                     src={logoLight}
-  //                     alt="logoLight"
-  //                   />
-  //                   <ul className="text-gray-200 flex flex-col gap-2">
-  //                     {navBarList.map((item) => (
-  //                       <li
-  //                         className="font-normal hover:font-bold items-center text-lg text-gray-200 hover:underline underline-offset-[4px] decoration-[1px] hover:text-white md:border-r-[2px] border-r-gray-300 hoverEffect last:border-r-0"
-  //                         key={item._id}
-  //                       >
-  //                         <NavLink
-  //                           to={item.link}
-  //                           state={{ data: location.pathname.split("/")[1] }}
-  //                           onClick={(e) => {
-  //                             if (isAuthenticated && user.role === 'seller' && item.title === 'Shop') {
-  //                               e.preventDefault();
-  //                               navigate('/overview');
-  //                               setSidenav(false);
-  //                             } else {
-  //                               setSidenav(false);
-  //                             }
-  //                           }}
-  //                         >
-  //                           {item.title}
-  //                         </NavLink>
-  //                       </li>
-  //                     ))}
-                      
-  //                     {/* User section in mobile menu */}
-  //                     {isAuthenticated ? (
-  //                       <>
-  //                         <li className="font-bold text-lg text-white mt-4">
-  //                           Hello, {user.username}
-  //                         </li>
-  //                         {/* Show "Become a Seller" option only for buyers */}
-  //                         {user.role === 'buyer' && (
-  //                           <li className="font-normal hover:font-bold items-center text-lg text-gray-200 hover:underline underline-offset-[4px] decoration-[1px] hover:text-white">
-  //                             <button 
-  //                               onClick={handleBecomeASeller}
-  //                               className="w-full text-left"
-  //                             >
-  //                               Become a Seller
-  //                             </button>
-  //                           </li>
-  //                         )}
-  //                         <li className="font-normal hover:font-bold items-center text-lg text-gray-200 hover:underline underline-offset-[4px] decoration-[1px] hover:text-white">
-  //                           <button 
-  //                             onClick={handleLogout}
-  //                             className="w-full text-left"
-  //                           >
-  //                             Logout
-  //                           </button>
-  //                         </li>
-  //                       </>
-  //                     ) : (
-  //                       <li className="font-normal hover:font-bold items-center text-lg text-gray-200 hover:underline underline-offset-[4px] decoration-[1px] hover:text-white">
-  //                         <NavLink
-  //                           to="/signin"
-  //                           onClick={() => setSidenav(false)}
-  //                         >
-  //                           Sign In
-  //                         </NavLink>
-  //                       </li>
-  //                     )}
-  //                   </ul>
-  //                   <div className="mt-4">
-  //                     <h1
-  //                       onClick={() => setCategory(!category)}
-  //                       className="flex justify-between text-base cursor-pointer items-center font-titleFont mb-2"
-  //                     >
-  //                       Shop by Category{" "}
-  //                       <span className="text-lg">{category ? "-" : "+"}</span>
-  //                     </h1>
-  //                     {category && (
-  //                       <motion.ul
-  //                         initial={{ y: 15, opacity: 0 }}
-  //                         animate={{ y: 0, opacity: 1 }}
-  //                         transition={{ duration: 0.4 }}
-  //                         className="text-sm flex flex-col gap-1"
-  //                       >
-  //                         <li className="headerSedenavLi">New Arrivals</li>
-  //                         <li className="headerSedenavLi">Gadgets</li>
-  //                         <li className="headerSedenavLi">Accessories</li>
-  //                         <li className="headerSedenavLi">Electronics</li>
-  //                         <li className="headerSedenavLi">Others</li>
-  //                       </motion.ul>
-  //                     )}
-  //                   </div>
-  //                   <div className="mt-4">
-  //                     <h1
-  //                       onClick={() => setBrand(!brand)}
-  //                       className="flex justify-between text-base cursor-pointer items-center font-titleFont mb-2"
-  //                     >
-  //                       Shop by Brand
-  //                       <span className="text-lg">{brand ? "-" : "+"}</span>
-  //                     </h1>
-  //                     {brand && (
-  //                       <motion.ul
-  //                         initial={{ y: 15, opacity: 0 }}
-  //                         animate={{ y: 0, opacity: 1 }}
-  //                         transition={{ duration: 0.4 }}
-  //                         className="text-sm flex flex-col gap-1"
-  //                       >
-  //                         <li className="headerSedenavLi">Apple</li>
-  //                         <li className="headerSedenavLi">Samsung</li>
-  //                         <li className="headerSedenavLi">Sony</li>
-  //                         <li className="headerSedenavLi">Dell</li>
-  //                         <li className="headerSedenavLi">Others</li>
-  //                       </motion.ul>
-  //                     )}
-  //                   </div>
-  //                 </div>
-  //                 <span
-  //                   onClick={() => setSidenav(false)}
-  //                   className="w-8 h-8 border-[1px] border-gray-300 absolute top-2 -right-10 text-gray-300 text-2xl flex justify-center items-center cursor-pointer hover:border-red-500 hover:text-red-500 duration-300"
-  //                 >
-  //                   <MdClose />
-  //                 </span>
-  //               </motion.div>
-  //             </div>
-  //           )}
-  //         </div>
-  //       </Flex>
-  //     </nav>
-  //   </div>
-  // );
+  const getProductImage = (item) => {
+    if (!item.image) {
+      return "https://via.placeholder.com/100?text=No+Image";
+    }
+
+    if (item.image.startsWith("http://") || item.image.startsWith("https://")) {
+      return item.image;
+    } else {
+      return `${API_BASE_URL}/uploads/${item.image}`;
+    }
+  };
+
+  return (
+    <div className="w-full bg-white">
+      {/* TOP BAR - Giống eBay */}
+      <div className="sticky top-0 z-50 shadow-sm bg-white">
+        <div className="max-w-[1280px] mx-auto px-4">
+          <div className="flex items-center justify-between py-2 text-xs">
+            {/* Left side */}
+            <div className="flex items-center gap-4">
+              {isAuthenticated ? (
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-600">Hi,</span>
+                  <button
+                    onClick={() => navigate("/profile")}
+                    className="text-blue-600 hover:underline font-semibold"
+                  >
+                    {userName || "User"}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-600">Hi!</span>
+                  <Link to="/signin" className="text-blue-600 hover:underline">
+                    Sign in
+                  </Link>
+                  <span className="text-gray-600">or</span>
+                  <Link to="/signup" className="text-blue-600 hover:underline">
+                    register
+                  </Link>
+                </div>
+              )}
+
+              <Link
+                to="/deals"
+                className="text-gray-700 hover:text-blue-600 hover:underline"
+              >
+                Daily Deals
+              </Link>
+
+              <Link
+                to="/about"
+                className="text-gray-700 hover:text-blue-600 hover:underline hidden md:block"
+              >
+                Brand Outlet
+              </Link>
+
+              <Link
+                to="/contact"
+                className="text-gray-700 hover:text-blue-600 hover:underline hidden md:block"
+              >
+                Help & Contact
+              </Link>
+            </div>
+
+            {/* Right side */}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1 text-gray-700 hidden md:flex">
+                <span>Ship to</span>
+                <button className="flex items-center gap-1 hover:text-blue-600">
+                  <span className="font-semibold">Vietnam</span>
+                  <FaChevronDown className="text-xs" />
+                </button>
+              </div>
+
+              {isAuthenticated && user?.role === "buyer" && (
+                <Link
+                  to="/store-registration"
+                  className="text-gray-700 hover:text-blue-600 hover:underline"
+                >
+                  Sell
+                </Link>
+              )}
+
+              {isAuthenticated && user?.role === "seller" && (
+                <Link
+                  to="/overview"
+                  className="text-gray-700 hover:text-blue-600 hover:underline"
+                >
+                  Seller Hub
+                </Link>
+              )}
+
+              <Link
+                to="/watchlist"
+                className="text-gray-700 hover:text-blue-600 hover:underline hidden md:block"
+              >
+                Watchlist
+              </Link>
+
+              <Link
+                to="/order-history"
+                className="text-gray-700 hover:text-blue-600 hover:underline flex items-center gap-1"
+              >
+                <span>My eBay</span>
+                <FaChevronDown className="text-xs" />
+              </Link>
+
+              {/* Notifications */}
+              {isAuthenticated && (
+                <button className="relative text-gray-700 hover:text-blue-600">
+                  <FiBell className="text-base" />
+                  {chatNotifications > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                      {chatNotifications}
+                    </span>
+                  )}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* MAIN HEADER - Logo + Search + Icons */}
+      <div className="bg-white w-full">
+        <div className="w-full px-10">
+          <div className="flex items-center justify-between py-4 w-full">
+            {/* LEFT: Logo + Shop by category */}
+            <div className="flex items-center gap-8 flex-shrink-0">
+              {/* Logo */}
+              <Link to="/" className="flex items-center">
+                <img
+                  src={logoImg}
+                  alt="Shop Logo"
+                  className="h-10 md:h-12 w-auto object-contain"
+                />
+              </Link>
+
+              {/* Shop by category */}
+              <div ref={categoryRef} className="relative">
+                <button
+                  onClick={() => setShowCategories(!showCategories)}
+                  className="flex items-center gap-2 text-gray-700 hover:text-blue-600 font-medium text-sm"
+                >
+                  <span>Shop by category</span>
+                  <FaChevronDown className="text-xs" />
+                </button>
+
+                {showCategories && (
+                  <motion.div
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-0 mt-2 w-60 bg-white border border-gray-200 rounded-lg shadow-xl z-50 py-2"
+                  >
+                    {categories.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        to={cat.link}
+                        onClick={() => setShowCategories(false)}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                      >
+                        {cat.name}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </div>
+            </div>
+
+            {/* CENTER: Search (ăn hết phần còn lại) */}
+            <div className="flex-1 mx-16 max-w-[900px] relative">
+              <div className="flex border-2 border-gray-900 rounded-full overflow-hidden">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={handleSearch}
+                  placeholder="Search for anything"
+                  className="flex-1 px-4 py-2.5 text-sm outline-none"
+                />
+
+                <div className="border-l-2 border-gray-900" />
+
+                <button className="px-3 hover:bg-gray-50 flex items-center gap-2 text-sm">
+                  <span className="hidden md:inline text-gray-700">
+                    All Categories
+                  </span>
+                  <FaChevronDown className="text-xs text-gray-600" />
+                </button>
+
+                <button className="px-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold flex items-center gap-2">
+                  <FaSearch />
+                  <span className="hidden md:inline">Search</span>
+                </button>
+              </div>
+
+              {/* Search Results giữ nguyên */}
+              {searchQuery && filteredProducts.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute w-full mt-2 max-h-96 bg-white border border-gray-200 rounded-lg shadow-2xl overflow-y-auto z-50"
+                >
+                  {filteredProducts.map((item) => (
+                    <div
+                      key={item._id}
+                      onClick={() => {
+                        navigate(`/product/${item._id}`, { state: { item } });
+                        setSearchQuery("");
+                      }}
+                      className="flex items-center gap-3 p-3 hover:bg-blue-50 cursor-pointer border-b"
+                    >
+                      <img
+                        src={getProductImage(item)}
+                        className="w-14 h-14 object-contain"
+                        alt={item.name}
+                      />
+                      <div className="flex-1">
+                        <p className="font-semibold text-sm truncate">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-gray-600 truncate">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+            </div>
+
+            {/* Right Icons - Chat, Account, Cart */}
+            <div className="flex items-center gap-3">
+              {/* Chat */}
+              {isAuthenticated && (
+                <Link
+                  to="/chat"
+                  className="relative flex flex-col items-center hover:text-blue-600 transition-colors group"
+                >
+                  <FiMessageSquare className="text-xl" />
+                  {chatNotifications > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                      {chatNotifications}
+                    </span>
+                  )}
+                  <span className="text-xs mt-0.5">Messages</span>
+                </Link>
+              )}
+
+              {/* Account Dropdown */}
+              <div
+                ref={ref}
+                onClick={() => setShowUser(!showUser)}
+                className="relative cursor-pointer"
+              >
+                <div className="flex flex-col items-center hover:text-blue-600 transition-colors">
+                  <FiUser className="text-xl" />
+                  <span className="text-xs mt-0.5">Account</span>
+                </div>
+
+                {showUser && (
+                  <motion.div
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full right-0 mt-2 w-56 bg-white rounded-lg shadow-2xl border border-gray-200 py-2 z-50"
+                  >
+                    {isAuthenticated ? (
+                      <>
+                        {userName && (
+                          <div className="px-4 py-2 border-b border-gray-200 font-medium text-gray-900">
+                            Hi, {userName}
+                          </div>
+                        )}
+                        <Link
+                          to="/order-history"
+                          onClick={() => setShowUser(false)}
+                        >
+                          <div className="px-4 py-2 hover:bg-blue-50 flex items-center gap-3 text-sm text-gray-700">
+                            <MdOutlineHistory />
+                            Purchase History
+                          </div>
+                        </Link>
+                        <Link to="/profile" onClick={() => setShowUser(false)}>
+                          <div className="px-4 py-2 hover:bg-blue-50 flex items-center gap-3 text-sm text-gray-700">
+                            <RiUserSettingsLine />
+                            Account Settings
+                          </div>
+                        </Link>
+                        <Link to="/address" onClick={() => setShowUser(false)}>
+                          <div className="px-4 py-2 hover:bg-blue-50 flex items-center gap-3 text-sm text-gray-700">
+                            <RiHomeSmileLine />
+                            Addresses
+                          </div>
+                        </Link>
+                        <div className="border-t border-gray-200 my-1"></div>
+                        <div
+                          onClick={handleLogout}
+                          className="px-4 py-2 hover:bg-red-50 flex items-center gap-3 text-sm text-red-600 cursor-pointer"
+                        >
+                          <FiLogOut />
+                          Sign out
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <Link to="/signin" onClick={() => setShowUser(false)}>
+                          <div className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white text-center font-medium rounded mx-2 mb-2">
+                            Sign in
+                          </div>
+                        </Link>
+                        <div className="px-4 py-2 text-xs text-gray-600 text-center">
+                          New user?{" "}
+                          <Link
+                            to="/signup"
+                            className="text-blue-600 hover:underline"
+                          >
+                            Sign up
+                          </Link>
+                        </div>
+                      </>
+                    )}
+                  </motion.div>
+                )}
+              </div>
+
+              {/* Shopping Cart */}
+              <Link
+                to="/cart"
+                className="relative flex flex-col items-center hover:text-blue-600 transition-colors"
+              >
+                <div className="relative">
+                  <FiShoppingBag className="text-xl" />
+                  {cartTotalCount > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                      {cartTotalCount}
+                    </span>
+                  )}
+                </div>
+                <span className="text-xs mt-0.5">Cart</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* BOTTOM NAVIGATION - Categories */}
+      <div className="bg-gray-50 border-t border-gray-200">
+        <div className="max-w-[1600px] mx-auto px-6">
+          <div className="flex items-center gap-6 py-2.5 text-sm overflow-x-auto">
+            {/* Shop by Category Dropdown */}
+            <div ref={categoryRef} className="relative">
+              <button
+                onClick={() => setShowCategories(!showCategories)}
+                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 font-medium whitespace-nowrap"
+              >
+                <span>Shop by category</span>
+                <FaChevronDown className="text-xs" />
+              </button>
+
+              {showCategories && (
+                <motion.div
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-0 mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-xl z-50 py-2"
+                >
+                  {categories.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      to={cat.link}
+                      onClick={() => setShowCategories(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </div>
+
+            {categories.slice(0, 6).map((cat) => (
+              <Link
+                key={cat.id}
+                to={cat.link}
+                className="text-gray-700 hover:text-blue-600 whitespace-nowrap"
+              >
+                {cat.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* ===== HOME BANNER (ADDED - NO CHANGE TO EXISTING CODE) ===== */}
+     
+    </div>
+  );
 };
 
 export default Header;

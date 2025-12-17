@@ -38,6 +38,7 @@ import SortIcon from '@mui/icons-material/Sort';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import { motion } from 'framer-motion';
+import HeaderBottom from '../components/home/Header/HeaderBottom';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -317,7 +318,10 @@ const Home = () => {
   const sortedProducts = getSortedProducts();
 
   return (
-    <Container maxWidth="lg" sx={{ py: 5 }}>
+    <div>
+      <HeaderBottom /> 
+      <Container maxWidth="lg" sx={{ py: 5 }}>
+      
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -942,6 +946,9 @@ const Home = () => {
         </Grid>
       </Grid>
     </Container>
+    </div>
+    
+    
   );
 };
 
