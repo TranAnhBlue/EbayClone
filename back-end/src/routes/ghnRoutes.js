@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
+const { publicRateLimiter, strictRateLimiter } = require('../middleware/rateLimit.middleware');
 const {
   getProvinces,
   getDistricts,
@@ -9,7 +11,7 @@ const {
 } = require('../services/ghnFunctionService');
 
 // Lấy danh sách tỉnh/thành phố
-router.get('/provinces', async (req, res) => {
+router.get('/provinces', publicRateLimiter, async (req, res) => {
   try {
     const token = process.env.GHN_TOKEN;
     const data = await getProvinces(token);
@@ -20,7 +22,7 @@ router.get('/provinces', async (req, res) => {
 });
 
 // Lấy danh sách quận/huyện
-router.get('/districts', async (req, res) => {
+router.get('/districts', publicRateLimiter, async (req, res) => {
   try {
     const token = process.env.GHN_TOKEN;
     const provinceId = parseInt(req.query.province_id);
@@ -32,7 +34,7 @@ router.get('/districts', async (req, res) => {
 });
 
 // Lấy danh sách phường/xã
-router.get('/wards', async (req, res) => {
+router.get('/wards', publicRateLimiter, async (req, res) => {
   try {
     const token = process.env.GHN_TOKEN;
     const districtId = parseInt(req.query.district_id);
@@ -44,7 +46,7 @@ router.get('/wards', async (req, res) => {
 });
 
 // Lấy các gói dịch vụ vận chuyển khả dụng
-router.get('/services', async (req, res) => {
+router.get('/services', publicRateLimiter, async (req, res) => {
   try {
     const token = process.env.GHN_TOKEN;
     const shopId = parseInt(process.env.GHN_SHOP_ID);
@@ -57,8 +59,8 @@ router.get('/services', async (req, res) => {
   }
 });
 
-// Tính phí vận chuyển
-router.post('/fee', async (req, res) => {
+// Tính phí vận chuyển (áp dụng rate limit nghiêm ngặt hơn)
+router.post('/fee', strictRateLimiter, async (req, res) => {
   try {
     const token = process.env.GHN_TOKEN;
     const shopId = parseInt(process.env.GHN_SHOP_ID);
@@ -70,8 +72,8 @@ router.post('/fee', async (req, res) => {
   }
 });
 
-// API tính phí vận chuyển chỉ cần from_district_id, to_district_id, to_ward_code
-router.post('/calc-fee-simple', async (req, res) => {
+// API tính phí vận chuyển chỉ cần from_district_id, to_district_id, to_ward_code (áp dụng rate limit nghiêm ngặt)
+router.post('/calc-fee-simple', strictRateLimiter, async (req, res) => {
   try {
     const token = process.env.GHN_TOKEN;
     const shopId = parseInt(process.env.GHN_SHOP_ID);
@@ -100,9 +102,8 @@ router.post('/calc-fee-simple', async (req, res) => {
     // Lấy tỷ giá động từ API nội bộ
     let usdRate = 1;
     try {
-      const fetch = require('node-fetch');
-      const rateRes = await fetch('http://localhost:9999/api/ghn/exchange-rate');
-      const rateData = await rateRes.json();
+      const rateRes = await axios.get('http://localhost:9999/api/ghn/exchange-rate');
+      const rateData = rateRes.data;
       if (rateData && rateData.success && rateData.rate) {
         usdRate = rateData.rate;
       }
@@ -136,13 +137,12 @@ router.post('/calc-fee-simple', async (req, res) => {
     res.status(500).json({ error: err.response ? err.response.data : err.message });
   }
 });
-const fetch = require('node-fetch');
-router.get('/exchange-rate', async (req, res) => {
+router.get('/exchange-rate', publicRateLimiter, async (req, res) => {
   try {
     // Sử dụng API miễn phí, có thể thay bằng API khác nếu cần
     const apiUrl = 'https://open.er-api.com/v6/latest/USD';
-    const response = await fetch(apiUrl);
-    const data = await response.json();
+    const response = await axios.get(apiUrl);
+    const data = response.data;
     if (data && data.rates && data.rates.VND) {
       res.json({
         success: true,

@@ -1,5 +1,6 @@
 const express = require('express');
 const { authMiddleware, isBuyer, isSellerOrBuyer } = require('../middleware/auth.middleware');
+const { generalRateLimiter, strictRateLimiter, veryStrictRateLimiter } = require('../middleware/rateLimit.middleware');
 const paymentController = require('../controllers/paymentController');
 // ... (các controller khác giữ nguyên)
 const orderController = require('../controllers/orderController');
@@ -15,12 +16,13 @@ const returnRequestController = require('../controllers/returnRequestController'
 const buyerRouter = express.Router();
 
 // --- SỬA Ở ĐÂY ---
-// Public routes for payment callbacks (không yêu cầu xác thực)
+// Public routes for payment callbacks (không yêu cầu xác thực, không áp dụng rate limit nghiêm ngặt)
 // Route phải khớp với cấu hình trong paymentController
 buyerRouter.get('/payments/paypal/callback', paymentController.paypalCallback);
 
 
 // Protected routes (yêu cầu xác thực là buyer)
+buyerRouter.use(generalRateLimiter);
 buyerRouter.use(authMiddleware);
 
 // User role management
@@ -29,19 +31,19 @@ buyerRouter.put('/change-role', authController.changeRole);
 // Quản lý giỏ hàng
 const cartRoutes = express.Router();
 cartRoutes.use(isSellerOrBuyer);
-cartRoutes.post('/add', cartController.addToCart);
+cartRoutes.post('/add', strictRateLimiter, cartController.addToCart);
 cartRoutes.get('/', cartController.viewCart);
-cartRoutes.put('/update/:productId', cartController.updateCartItem);
-cartRoutes.delete('/remove/:productId', cartController.deleteCartItem);
-cartRoutes.post('/remove-multiple', cartController.removeMultipleItems);
+cartRoutes.put('/update/:productId', strictRateLimiter, cartController.updateCartItem);
+cartRoutes.delete('/remove/:productId', strictRateLimiter, cartController.deleteCartItem);
+cartRoutes.post('/remove-multiple', strictRateLimiter, cartController.removeMultipleItems);
 buyerRouter.use('/cart', cartRoutes);
 
 // Address routes
-buyerRouter.post('/addresses', addressController.createAddress);
+buyerRouter.post('/addresses', strictRateLimiter, addressController.createAddress);
 buyerRouter.get('/addresses', addressController.getAddresses);
-buyerRouter.put('/addresses/:id', addressController.updateAddress);
-buyerRouter.delete('/addresses/:id', addressController.deleteAddress);
-buyerRouter.put('/addresses/:id/default', addressController.setDefaultAddress);
+buyerRouter.put('/addresses/:id', strictRateLimiter, addressController.updateAddress);
+buyerRouter.delete('/addresses/:id', strictRateLimiter, addressController.deleteAddress);
+buyerRouter.put('/addresses/:id/default', strictRateLimiter, addressController.setDefaultAddress);
 
 // Voucher routes
 buyerRouter.get('/vouchers/code/:code', getVoucherByCode);
@@ -49,17 +51,17 @@ buyerRouter.get('/vouchers/code/:code', getVoucherByCode);
 // Quản lý đơn hàng
 const orderRoutes = express.Router();
 orderRoutes.use(isBuyer);
-orderRoutes.post('/', orderController.createOrder);
+orderRoutes.post('/', veryStrictRateLimiter, orderController.createOrder);
 orderRoutes.get('/', orderController.getBuyerOrders);
 orderRoutes.get('/:id', orderController.getOrderDetails);
-orderRoutes.put('/items/:id/status', orderController.updateOrderItemStatus);
-orderRoutes.put('/:id/cancel', orderController.cancelOrder);
+orderRoutes.put('/items/:id/status', strictRateLimiter, orderController.updateOrderItemStatus);
+orderRoutes.put('/:id/cancel', strictRateLimiter, orderController.cancelOrder);
 buyerRouter.use('/orders', orderRoutes);
 
 // Quản lý thanh toán
 const paymentRoutes = express.Router();
 paymentRoutes.use(isBuyer);
-paymentRoutes.post('/', paymentController.createPayment);
+paymentRoutes.post('/', veryStrictRateLimiter, paymentController.createPayment);
 paymentRoutes.get('/status/:orderId', paymentController.checkPaymentStatus);
 buyerRouter.use('/payments', paymentRoutes);
 
@@ -67,28 +69,28 @@ buyerRouter.use('/payments', paymentRoutes);
 // Review routes
 const reviewRoutes = express.Router();
 reviewRoutes.use(isBuyer);
-reviewRoutes.post('/', reviewController.createReview);
+reviewRoutes.post('/', strictRateLimiter, reviewController.createReview);
 reviewRoutes.get('/', reviewController.getBuyerReviews);
-reviewRoutes.put('/:id', reviewController.updateReview);
-reviewRoutes.delete('/:id', reviewController.deleteReview);
+reviewRoutes.put('/:id', strictRateLimiter, reviewController.updateReview);
+reviewRoutes.delete('/:id', strictRateLimiter, reviewController.deleteReview);
 buyerRouter.use('/reviews', reviewRoutes);
 
 // Dispute routes
 const disputeRoutes = express.Router();
 disputeRoutes.use(isBuyer);
 disputeRoutes.get('/eligibility/:orderItemId', disputeController.checkDisputeEligibility);
-disputeRoutes.post('/', disputeController.createDispute);
+disputeRoutes.post('/', strictRateLimiter, disputeController.createDispute);
 disputeRoutes.get('/', disputeController.getBuyerDisputes);
 disputeRoutes.get('/:id', disputeController.getDisputeDetails);
-disputeRoutes.put('/:id', disputeController.updateDispute);
-disputeRoutes.delete('/:id', disputeController.cancelDispute);
+disputeRoutes.put('/:id', strictRateLimiter, disputeController.updateDispute);
+disputeRoutes.delete('/:id', strictRateLimiter, disputeController.cancelDispute);
 buyerRouter.use('/disputes', disputeRoutes);
 
 // Quản lý yêu cầu đổi/trả hàng
-buyerRouter.post('/return-requests', returnRequestController.createReturnRequest);
+buyerRouter.post('/return-requests', strictRateLimiter, returnRequestController.createReturnRequest);
 buyerRouter.get('/return-requests', returnRequestController.getUserReturnRequests);
 buyerRouter.get('/return-requests/:id', returnRequestController.getReturnRequestDetail);
-buyerRouter.delete('/return-requests/:id', returnRequestController.cancelReturnRequest);
+buyerRouter.delete('/return-requests/:id', strictRateLimiter, returnRequestController.cancelReturnRequest);
 
 // Quản lý Profile cá nhân
 buyerRouter.get("/profile", userController.getProfile);
